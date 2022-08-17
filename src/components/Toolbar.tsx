@@ -10,8 +10,10 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { Cookies } from 'next/dist/server/web/spec-extension/cookies';
 
 const Links = ['admins', 'test', 'Team'];
+const cookies = new Cookies()
 
 const NavLink = ({ children }: { children: ReactNode }) => (
   <Link
@@ -20,7 +22,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
     rounded={'md'}
     _hover={{
       textDecoration: 'none',
-      bg: useColorModeValue('gray.200', 'gray.700'),
+      bg: 'none',
     }}
     href={`/${children}`}>
     {children}
@@ -43,7 +45,13 @@ export default function Simple() {
           />
           <HStack spacing={8} alignItems={'center'}>
             <Box>
-              <Link href='/'>
+              <Link
+                _hover={{
+                  textDecoration: 'none',
+                  bg: 'none',
+                }}
+                href='/'
+              >
                 Logo
               </Link>
             </Box>
@@ -62,29 +70,29 @@ export default function Simple() {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
               <Link
-                px={2}
+                px={4}
                 py={1}
                 rounded={'md'}
                 _hover={{
                   textDecoration: 'none',
-                  bg: useColorModeValue('gray.200', 'gray.700'),
-                }}
-                href='/Signup'
-              >
-                Signup
-              </Link>
-              <Link
-                px={2}
-                py={1}
-                rounded={'md'}
-                _hover={{
-                  textDecoration: 'none',
-                  bg: useColorModeValue('gray.200', 'gray.700'),
+                  bg: 'none',
                 }}
                 href='/login'
               >
                 Login
               </Link>
+              {/* <Link
+                px={4}
+                py={1}
+                rounded={'md'}
+                _hover={{
+                  textDecoration: 'none',
+                  bg: 'none',
+                }}
+                href='/'
+              >
+                Logout
+              </Link> */}
             </HStack>
           </HStack>
         </Flex>
