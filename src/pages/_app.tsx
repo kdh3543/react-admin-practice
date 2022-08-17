@@ -6,7 +6,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
        <Toolbar />
-      <Component {...pageProps} />
+      <Component {...pageProps}/>
     </ChakraProvider>
   )
   
