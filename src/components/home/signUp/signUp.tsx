@@ -69,7 +69,7 @@ const SignUp = (prop:any) => {
     prop.signUp(true);
 
     try {
-    const response = await axios.post('https://dev-admin.luxon.run/auth/signup', {email: "rkdtlsdud@naver.com", password: "1234"});
+    const response = await axios.post('https://dev-admin.luxon.run/auth/signup', {email:signUpValue.userId , password: signUpValue.userPw});
     console.log(response);
     }catch(err) {
       console.log(err);

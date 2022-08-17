@@ -16,11 +16,35 @@ import {
   InputRightElement
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
 const Login = () => {
+  const router = useRouter();
+  const [loginInfo, setLoginInfo] = useState({
+    userId: '',
+    userPw: '',
+  });
+
+  const onChange = (e:any) => {
+    const { value, name } = e.target;
+    setLoginInfo({ ...loginInfo, [name]: value });
+  }
+
+  const LoginGetId = async (e: any) => {
+    e.preventDefault();
+    try {
+      await axios.post('https://dev-admin.luxon.run/auth/login', { email: loginInfo.userId, password: loginInfo.userPw });
+      router.push('/test');
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
   return (
     <Flex
       flexDirection="column"
@@ -48,7 +72,7 @@ const Login = () => {
                     pointerEvents="none"
                     children={<CFaUserAlt color="gray.300" />}
                   />
-                  <Input type="email" placeholder="이메일" />
+                  <Input name="userId" type="email" placeholder="이메일" value={loginInfo.userId} onChange={onChange} />
                 </InputGroup>
               </FormControl>
               <FormControl>
@@ -59,8 +83,11 @@ const Login = () => {
                     children={<CFaLock color="gray.300" />}
                   />
                   <Input
+                    name="userPw"
                     type="password"
                     placeholder="비밀번호"
+                    value={loginInfo.userPw}
+                    onChange={onChange}
                   />
                 </InputGroup>
               </FormControl>
@@ -70,6 +97,7 @@ const Login = () => {
                 variant="solid"
                 colorScheme="teal"
                 width="full"
+                onClick={LoginGetId}
               >
                 로그인
               </Button>
