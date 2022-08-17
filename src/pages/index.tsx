@@ -1,10 +1,10 @@
 import type { NextPage } from 'next'
-import Toolbar from '../components/Toolbar'
+import HomePage from '../components/home/homePage'
 
 const Home: NextPage = () => {
   return (
-    <div >
-      <Toolbar />
+    <div > 
+      <HomePage />
     </div>
   )
 }
