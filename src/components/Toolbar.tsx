@@ -1,6 +1,6 @@
 import styles from '/styles/Toolbar.module.css'
-import NextLink from 'next/link';
-import { Link, Text, Flex, HStack } from '@chakra-ui/react'
+import Link from 'next/link';
+import { Text, Flex, HStack } from '@chakra-ui/react'
 
 export default function Toolbar() {
   return (
@@ -14,23 +14,22 @@ export default function Toolbar() {
         pos={'fixed'}
         top={0}
       >
-        <NextLink href={'/'}>
-          <Link isExternal>
+        <Link href={'/'}>
+          <a>
             <Text>
               home
             </Text>
-            
-          </Link>
-        </NextLink>
-        <NextLink href={'/'}>
-          <Link isExternal>
+          </a>
+        </Link>
+        <Link href={'/test'}>
+          <a>
             <Text>
               home2
             </Text>
-          </Link>
-        </NextLink>
+          </a>
+        </Link>
       </Flex>
     </HStack>
-    
+
   )
 }
