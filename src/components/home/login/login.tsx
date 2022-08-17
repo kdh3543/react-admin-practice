@@ -48,7 +48,7 @@ const Login = () => {
                     pointerEvents="none"
                     children={<CFaUserAlt color="gray.300" />}
                   />
-                  <Input type="email" placeholder="email address" />
+                  <Input type="email" placeholder="이메일" />
                 </InputGroup>
               </FormControl>
               <FormControl>
@@ -60,7 +60,7 @@ const Login = () => {
                   />
                   <Input
                     type="password"
-                    placeholder="Password"
+                    placeholder="비밀번호"
                   />
                 </InputGroup>
               </FormControl>

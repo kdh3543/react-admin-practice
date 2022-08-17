@@ -20,7 +20,7 @@ const HomePage = () => {
       <Box width={'container.sm'} display={'flex'} flexDirection={'column'}>
         <Box display={'flex'} justifyContent={'center'}>
           {
-            clickStatus ? <Login /> : <SignUp />
+            clickStatus ? <Login /> : <SignUp signUp={setClickStatus} />
           }
         </Box>
         <Box> {
