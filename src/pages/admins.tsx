@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 import { Key, useEffect, useState } from 'react'
 // import { setToken, getToken } from '../localStorage/token'
 import { Cookies } from 'react-cookie'
@@ -13,6 +14,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
 export default function Signup() {
   const [admin, setAdmin] = useState<any>([])
+
   const [page, setPage] = useState(1)
 
   const getAdmins = async () => {
@@ -83,7 +85,6 @@ export default function Signup() {
           >
             <Box w={'10%'}>
               {data.id}
-              
             </Box>
             <Box w={'20%'}>
               {data.email}
@@ -113,5 +114,6 @@ export default function Signup() {
         onChange={handlePageChange}
       />
     </>
+
   )
 }
