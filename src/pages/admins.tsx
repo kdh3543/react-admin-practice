@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 import { Key, useEffect, useState } from 'react'
 // import { setToken, getToken } from '../localStorage/token'
 import { Cookies } from 'react-cookie'
@@ -13,11 +14,12 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
 export default function Signup() {
   const [admin, setAdmin] = useState<any>([])
+
   const [page, setPage] = useState(1)
 
   const getAdmins = async () => {
     try {
-      const res = await axios.get('https://dev-admin.luxon.run/admin/user?order=ASC&page=1&take=10')
+      const res = await axios.get(`https://dev-admin.luxon.run/admin/user?order=ASC&page=1&take=10`)
       setAdmin(res.data.data)
     } catch (e) {
       console.log(e)
@@ -25,9 +27,10 @@ export default function Signup() {
   }
   useEffect(() => {
     getAdmins()
-  },[])
+  },[page])
 
   const handlePageChange = (page:any) => {
+    console.log(page);
     setPage(page)
   }
   return (
@@ -83,7 +86,6 @@ export default function Signup() {
           >
             <Box w={'10%'}>
               {data.id}
-              
             </Box>
             <Box w={'20%'}>
               {data.email}
@@ -113,5 +115,6 @@ export default function Signup() {
         onChange={handlePageChange}
       />
     </>
+
   )
 }
