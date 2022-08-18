@@ -37,8 +37,10 @@ const Login = () => {
   const LoginGetId = async (e: any) => {
     e.preventDefault();
     try {
-      await axios.post('https://dev-admin.luxon.run/auth/login', { email: loginInfo.userId, password: loginInfo.userPw });
-      router.push('/test');
+       const res = await axios.post('https://dev-admin.luxon.run/auth/login', { email: loginInfo.userId, password: loginInfo.userPw });
+      if(res.data.code === 0) {
+        router.push('/test');
+      }
     } catch (err) {
       console.log(err);
     }
