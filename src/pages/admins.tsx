@@ -19,7 +19,7 @@ export default function Signup() {
 
   const getAdmins = async () => {
     try {
-      const res = await axios.get(`https://dev-admin.luxon.run/admin/user?order=ASC&page=1&take=10`)
+      const res = await axios.get(`https://dev-admin.luxon.run/admin/user?order=ASC&page=${page}&take=10`)
       setAdmin(res.data.data)
     } catch (e) {
       console.log(e)

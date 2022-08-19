@@ -2,8 +2,11 @@
   display: inline-block;
   flex-direction: row;
   margin-top: 15px;
-  padding-left: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 5px;
   text-align: center;
+  cursor: pointer;
 }
 
 .active {
