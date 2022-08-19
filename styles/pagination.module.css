@@ -1,0 +1,12 @@
+.pagination {
+  display: inline-block;
+  flex-direction: row;
+  margin-top: 15px;
+  padding-left: 15px;
+  text-align: center;
+}
+
+.active {
+  font-size: 20px;
+  font-weight: bold;
+}
