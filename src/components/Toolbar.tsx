@@ -11,10 +11,11 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Cookies } from 'next/dist/server/web/spec-extension/cookies';
+import axios from 'axios';
 
-const Links = ['admins', 'test', 'Team'];
+const Links = ['admins', 'users', 'Team'];
 const cookies = new Cookies()
-
+const isCookieExist = cookies.get('token')
 const NavLink = ({ children }: { children: ReactNode }) => (
   <Link
     px={2}
@@ -56,14 +57,15 @@ export default function Simple() {
                 Logo
               </Link>
             </Box>
-            <HStack
+            {!isCookieExist ? (<HStack
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
               {Links.map((link) => (
                 <NavLink key={link}>{link}</NavLink>
               ))}
-            </HStack>
+            </HStack>): ''}
+            
           </HStack>
           <HStack spacing={8} alignItems={'center'}>
             <HStack
@@ -80,7 +82,7 @@ export default function Simple() {
                 }}
                 href='/'
               >
-                Login
+                {isCookieExist ? 'Logout' : 'Login'}
               </Link>
               {/* <Link
                 px={4}

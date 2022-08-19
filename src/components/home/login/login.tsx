@@ -18,9 +18,11 @@ import {
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { Cookies } from 'next/dist/server/web/spec-extension/cookies';
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
+const cookies = new Cookies()
 
 const Login = () => {
   const router = useRouter();
@@ -37,15 +39,21 @@ const Login = () => {
   const LoginGetId = async (e: any) => {
     e.preventDefault();
     try {
-       const res = await axios.post('https://dev-admin.luxon.run/auth/login', { email: loginInfo.userId, password: loginInfo.userPw });
-      if(res.data.code === 0) {
-        router.push('/test');
+      const res = await axios.post('https://dev-admin.luxon.run/auth/login', { email: loginInfo.userId, password: loginInfo.userPw })
+      if (res.data.code === 0) {
+        cookies.set('token', res.data.data.authToken)
+        const token = cookies.get('token')
+        
+        axios.defaults.headers.common['Authorization']=`Bearer ${token}`
+        console.log('???')
+        console.log(token)
+        console.log(axios.defaults)
+        // router.push('/test');
       }
     } catch (err) {
       console.log(err);
     }
   }
-
 
   return (
     <Flex
