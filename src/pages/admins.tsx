@@ -2,28 +2,33 @@ import axios from 'axios'
 
 import { Key, useEffect, useState } from 'react'
 // import { setToken, getToken } from '../localStorage/token'
-import { Cookies } from 'react-cookie'
-import { Container } from '@chakra-ui/react'
+import { Cookies,useCookies } from 'react-cookie'
+import { Container, Flex } from '@chakra-ui/react'
 import Pagination from "react-js-pagination";
 import Admins from '../components/admin/Admins';
 import AdminHead from '../components/admin/AdminHead';
+import PaginationFunc from "../components/utils/PaginationFunc";
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 const cookies = new Cookies()
-
-cookies.set('token','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwNzE1MjgwLCJleHAiOjE2NjMzMDcyODB9.zBgx2E8bjwcfH_zGGejuQJhWmeHFHKF2DOM8SLsANsA')
+cookies.set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwNzE1MjgwLCJleHAiOjE2NjMzMDcyODB9.zBgx2E8bjwcfH_zGGejuQJhWmeHFHKF2DOM8SLsANsA')
 const token = cookies.get('token')
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
 export default function Signup() {
   const [admin, setAdmin] = useState<any>([])
   const [page, setPage] = useState(1)
-  const [allAds, setAllAds] = useState(0)
+  const [dataLength, setDataLength] = useState(0)
+  const [cookies, setCookie] = useCookies(['token'])
 
   const getAdmins = async () => {
     try {
-
+      setCookie('token','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwNzE1MjgwLCJleHAiOjE2NjMzMDcyODB9.zBgx2E8bjwcfH_zGGejuQJhWmeHFHKF2DOM8SLsANsA')
+      console.log(cookies.token)
+      axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.token}`
       const res = await axios.get('https://dev-admin.luxon.run/admin/user?order=ASC&page=1&take=10')
-      setAllAds(res.data.meta.itemCount)
+      
+      setDataLength(res.data.meta.itemCount)
       setAdmin(res.data.data)
     } catch (e) {
       console.log(e)
@@ -49,16 +54,9 @@ export default function Signup() {
         <AdminHead />
         <Admins adminData={admin} />
       </Container>
-      <Pagination
-        activePage={page}
-        itemsCountPerPage={10}
-        totalItemsCount={allAds}
-        pageRangeDisplayed={3}
-        prevPageText={"‹"}
-        nextPageText={"›"}
-        onChange={handlePageChange}
-      />
+      <Flex justifyContent={'center'}>
+        <PaginationFunc page={page} dataLength={dataLength} activePage={handlePageChange} />
+      </Flex>
     </>
-
   )
 }
