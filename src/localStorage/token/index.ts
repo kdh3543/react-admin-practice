@@ -1,4 +1,5 @@
 import { AccessTokenType } from '@apis/auth/AuthApi.type';
+import axios from 'axios';
 
 import {
   getLocalStorage,
