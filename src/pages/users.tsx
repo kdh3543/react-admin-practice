@@ -2,7 +2,7 @@ import { Box, Flex, flexbox } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Cookies } from 'react-cookie'
+import { Cookies } from 'react-cookie';
 import Pagination from "react-js-pagination";
 import styles from '../../styles/pagination.module.css';
 import PaginationFunc from "../components/utils/PaginationFunc";
@@ -13,12 +13,8 @@ const token = cookies.get('token')
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
 export default function Test() {
-<<<<<<< HEAD:src/pages/test.tsx
-  const titles = ['id', 'address', 'createdAt', 'droppedAt', 'deletedAt'];
-=======
   console.log(axios.defaults.headers.common['Authorization'])
-  const titles = ['id', 'email', 'createdAt', 'activatedAt', 'deletedAt', 'roles'];
->>>>>>> 083ccd394fb3e5307977ae4bffbc10be13197244:src/pages/users.tsx
+  const titles = ['id', 'address', 'createdAt', 'deletedAt', 'droppedAt', 'updatedAt'];
 
   const router = useRouter();
   const [userData, setUserData] = useState<any>([]);
@@ -35,7 +31,7 @@ export default function Test() {
     setUserData(res.data.data);
   }
 
-
+  console.log(userData);
   const activePage = (page:any) => {
     setPage(parseInt(page));
   }
@@ -55,7 +51,7 @@ export default function Test() {
         <Flex border={'1px'} borderRadius={'5px'} >
           {titles.map((v, i) => {
             return (
-              <Box width={"20%"} textAlign={'center'} py={4} key={i}>
+              <Box width={"20%"} textAlign={'center'} py={4} pl={4} key={i}>
                 {v}
               </Box>
             )
@@ -67,7 +63,7 @@ export default function Test() {
               <Box cursor={'pointer'} display={'flex'} key={i} border={'1px'} my={2} py={2} borderRadius={'5px'} justifyContent={'space-around'} onClick={() => {moveInfo(v.id)}}>
                 {titles.map((va: any, j: any) => {
                   return (
-                    <Box key={`${va}${j}`} fontSize={'10px'} display={'flex'} justifyContent={'space-around'} width={"20%"} textAlign={'center'}>
+                    <Box key={`${va}${j}`} fontSize={'10px'} display={'flex'} justifyContent={'space-around'} width={"20%"} textAlign={'center'} px={'30px'}>
                       {v[titles[j]] !== null ? v[titles[j]] : 'null'}
                     </Box>
                   )

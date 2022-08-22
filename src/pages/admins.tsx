@@ -23,16 +23,12 @@ export default function Signup() {
 
   const getAdmins = async () => {
     try {
-<<<<<<< HEAD
-      const res = await axios.get(`https://dev-admin.luxon.run/admin/user?order=ASC&page=${page}&take=10`)
-=======
       setCookie('token','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwNzE1MjgwLCJleHAiOjE2NjMzMDcyODB9.zBgx2E8bjwcfH_zGGejuQJhWmeHFHKF2DOM8SLsANsA')
       console.log(cookies.token)
       axios.defaults.headers.common['Authorization'] = `Bearer ${cookies.token}`
       const res = await axios.get('https://dev-admin.luxon.run/admin/user?order=ASC&page=1&take=10')
       
       setDataLength(res.data.meta.itemCount)
->>>>>>> 083ccd394fb3e5307977ae4bffbc10be13197244
       setAdmin(res.data.data)
     } catch (e) {
       console.log(e)
