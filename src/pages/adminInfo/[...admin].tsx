@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 
 export default function AdminInfor() {
   axios.defaults.headers.common['Authorization'] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwODk3NzY2LCJleHAiOjE2NjM0ODk3NjZ9.cMs3ECnAfpNLzrxUSP_joTLSgvWuEywVsdq2xrKwmr0`
-  const titles = ['id','Email','createdAt','updatedAt','deletedAt','activatedAt','roles']
+  const titles = ['id','Email','createdAt','updatedAt','deletedAt','activatedAt'];
   const [adInfo, setAdInfo] = useState<any>({})
   const [grade, setGrade] = useState('')
   const router = useRouter()
@@ -52,7 +52,8 @@ export default function AdminInfor() {
   }
 
   const goBack = () => {
-    history.back()
+    router.back();
+    // history.back(); 거기서 거기 ~
   }
   return (
     <Center py={'100px'}>

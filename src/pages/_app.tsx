@@ -5,11 +5,11 @@ import Toolbar from '../components/Toolbar'
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
-       <Toolbar />
-      <Component {...pageProps}/>
+      <Toolbar />
+      <Component {...pageProps} />
     </ChakraProvider>
   )
-  
+
 }
 
 export default MyApp
