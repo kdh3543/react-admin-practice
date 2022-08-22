@@ -1,6 +1,18 @@
 import { Box } from '@chakra-ui/react'
+import { useRouter } from "next/router";
+
 export default function Admins(props:any) {
   // const [data, setData] = use
+  const router = useRouter()
+  const openAdminInfor = (id:any) => {
+    router.push({
+      pathname: `/adminInfo/${id}`,
+      query: {
+        id
+      }
+    },`/adminInfo/${id}`)
+  }
+
   return (
     <>
       {props.adminData.map((data:any, index:Number) => (
@@ -14,6 +26,7 @@ export default function Admins(props:any) {
           border={'1px solid black'}
           textAlign={'center'}
           cursor={'pointer'}
+          onClick={() => { openAdminInfor(data.id) }}
         >
           <Box w={'10%'}>
             {data.id}

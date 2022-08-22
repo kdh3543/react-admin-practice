@@ -1,14 +1,11 @@
 import axios from 'axios'
-
 import { Key, useEffect, useState } from 'react'
-import { setToken, getToken } from '../localStorage/token'
 import { Container, Flex } from '@chakra-ui/react'
 import Admins from '../components/admin/Admins';
 import AdminHead from '../components/admin/AdminHead';
 import PaginationFunc from "../components/utils/PaginationFunc";
 
 export default function Signup() {
-  console.log()
   axios.defaults.headers.common['Authorization'] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwODk3NzY2LCJleHAiOjE2NjM0ODk3NjZ9.cMs3ECnAfpNLzrxUSP_joTLSgvWuEywVsdq2xrKwmr0`
   const [admin, setAdmin] = useState<any>([])
   const [page, setPage] = useState(1)
