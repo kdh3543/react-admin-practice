@@ -16,6 +16,7 @@ export const setLocalStorage = <T = any>(
     console.error('can not access without window');
     return;
   }
+  console.log(key)
   localStorage.setItem(key, JSON.stringify(value || defaultValue));
 };
 

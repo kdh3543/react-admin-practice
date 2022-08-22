@@ -6,11 +6,6 @@ import { Cookies } from 'react-cookie';
 import Pagination from "react-js-pagination";
 import styles from '../../styles/pagination.module.css';
 import PaginationFunc from "../components/utils/PaginationFunc";
-const cookies = new Cookies()
-
-cookies.set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwNzE1MjgwLCJleHAiOjE2NjMzMDcyODB9.zBgx2E8bjwcfH_zGGejuQJhWmeHFHKF2DOM8SLsANsA')
-const token = cookies.get('token')
-axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
 export default function Test() {
   console.log(axios.defaults.headers.common['Authorization'])
