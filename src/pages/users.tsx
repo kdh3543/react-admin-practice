@@ -2,18 +2,21 @@ import { Box, Flex, flexbox } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Cookies } from 'react-cookie';
+// import { Cookies } from 'react-cookie';
 import Pagination from "react-js-pagination";
 import styles from '../../styles/pagination.module.css';
 import PaginationFunc from "../components/utils/PaginationFunc";
-const cookies = new Cookies()
+import { getCookie } from "../components/utils/cookie";
+// const cookies = new Cookies()
 
-cookies.set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwNzE1MjgwLCJleHAiOjE2NjMzMDcyODB9.zBgx2E8bjwcfH_zGGejuQJhWmeHFHKF2DOM8SLsANsA')
-const token = cookies.get('token')
-axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+// cookies.set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwNzE1MjgwLCJleHAiOjE2NjMzMDcyODB9.zBgx2E8bjwcfH_zGGejuQJhWmeHFHKF2DOM8SLsANsA')
+// const token = cookies.get('token')
+// axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+
 
 export default function Test() {
-  console.log(axios.defaults.headers.common['Authorization'])
+  // console.log(axios.defaults.headers.common['Authorization'])
   const titles = ['id', 'address', 'createdAt', 'deletedAt', 'droppedAt', 'updatedAt'];
 
   const router = useRouter();
@@ -26,7 +29,16 @@ export default function Test() {
   }, [page]);
 
   const getUserData = async () => {
-    const res = await axios.get(`https://dev-admin.luxon.run/user?order=ASC&page=${page}&take=10`);
+    const res = await axios({
+      method: 'get',
+      url: `https://dev-admin.luxon.run/user?order=ASC&page=${page}&take=10`,
+      headers: {
+        'content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('myToken')}`
+      }
+    })
+
+    // const res = await axios.get(`https://dev-admin.luxon.run/user?order=ASC&page=${page}&take=10`);
     setDataLength(res.data.meta.itemCount);
     setUserData(res.data.data);
   }

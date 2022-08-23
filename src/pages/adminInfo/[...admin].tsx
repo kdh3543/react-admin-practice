@@ -19,7 +19,7 @@ export default function AdminInfor() {
   axios.defaults.headers.common['Authorization'] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwODk3NzY2LCJleHAiOjE2NjM0ODk3NjZ9.cMs3ECnAfpNLzrxUSP_joTLSgvWuEywVsdq2xrKwmr0`
   const titles = ['id','Email','createdAt','updatedAt','deletedAt','activatedAt'];
   const [adInfo, setAdInfo] = useState<any>({})
-  const [grade, setGrade] = useState('')
+  const [grade, setGrade] = useState<any>('')
   const router = useRouter()
 
   const getAdminInfo = async () => {
@@ -35,7 +35,7 @@ export default function AdminInfor() {
   
   const modifyGrade = async () => {
     if (grade) {
-      const sendNum = parseInt(router.query.admin)
+      const sendNum = parseInt(router.query.admin);
       await axios.put(`https://dev-admin.luxon.run/admin/user/role`, {
         adminUserId: sendNum,
         roles: grade
