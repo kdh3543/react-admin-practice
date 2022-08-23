@@ -14,6 +14,7 @@ import { FaUserAlt, FaLock } from "react-icons/fa";
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { setToken } from "../../../localStorage/token";
+import { getCookie, setCookie } from "../../../utils/cookie";
   
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -35,9 +36,13 @@ const Login = () => {
     try {
       const res = await axios.post('https://dev-admin.luxon.run/auth/login', { email: loginInfo.userId, password: loginInfo.userPw })
       if (res.data.code === 0) {
-        setToken({
-          accessToken: res.data.data.authToken
-        })
+        console.log(res.data)
+        setCookie('token', res.data.data.authToken)
+        const cook = getCookie('token')
+        console.log(cook)
+        // setToken({
+        //   accessToken: res.data.data.authToken
+        // })
         axios.defaults.headers.common['Authorization']=`Bearer ${res.data.data.authToken}`
         router.push('/admins');
       }

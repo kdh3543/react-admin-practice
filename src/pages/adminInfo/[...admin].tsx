@@ -12,17 +12,20 @@ import {
   Button,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { CheckIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
+import { getCookie } from "../../utils/cookie";
 
 export default function AdminInfor() {
   axios.defaults.headers.common['Authorization'] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwODk3NzY2LCJleHAiOjE2NjM0ODk3NjZ9.cMs3ECnAfpNLzrxUSP_joTLSgvWuEywVsdq2xrKwmr0`
-  const titles = ['id','Email','createdAt','updatedAt','deletedAt','activatedAt'];
+  // const cook = getCookie('token')
+  // axios.defaults.headers.common['Authorization'] = `Bearer ${cook}`
+  const titles = ['id','Email','createdAt','updatedAt','deletedAt','activatedAt','roles']
   const [adInfo, setAdInfo] = useState<any>({})
   const [grade, setGrade] = useState('')
   const router = useRouter()
-
+  
   const getAdminInfo = async () => {
+    
     await axios.get(`https://dev-admin.luxon.run/admin/user/${router.query.admin}`).then((res) => {
       if (res.data.code===0) {
         setAdInfo(res.data.data)  
