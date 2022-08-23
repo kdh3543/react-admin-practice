@@ -14,8 +14,8 @@ import { FaUserAlt, FaLock } from "react-icons/fa";
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { setToken } from "../../../localStorage/token";
-import { setCookie } from "../../utils/cookie";
-
+import { getCookie, setCookie } from "../../../utils/cookie";
+  
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 

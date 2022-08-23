@@ -11,11 +11,12 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Cookies } from 'next/dist/server/web/spec-extension/cookies';
+import { getCookie, setCookie } from '../utils/cookie';
 import axios from 'axios';
+import Router from 'next/router';
 
 const Links = ['admins', 'users', 'Team'];
-const cookies = new Cookies()
-const isCookieExist = cookies.get('token')
+
 const NavLink = ({ children }: { children: ReactNode }) => (
   <Link
     px={2}
@@ -31,8 +32,16 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 );
 
 export default function Simple() {
+  const logout = () => {
+    setCookie('token','')
+    Router.push({
+      pathname: '/'
+    })
+  }
+  axios.defaults.headers.common['Authorization'] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwODk3NzY2LCJleHAiOjE2NjM0ODk3NjZ9.cMs3ECnAfpNLzrxUSP_joTLSgvWuEywVsdq2xrKwmr0`
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  // const cook = getCookie('token')
+  // console.log(cook)
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -57,7 +66,7 @@ export default function Simple() {
                 Logo
               </Link>
             </Box>
-            {!isCookieExist ? (<HStack
+            {true ? (<HStack
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
@@ -72,30 +81,33 @@ export default function Simple() {
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
-              <Link
-                px={4}
-                py={1}
-                rounded={'md'}
-                _hover={{
-                  textDecoration: 'none',
-                  bg: 'none',
-                }}
-                href='/'
-              >
-                {isCookieExist ? 'Logout' : 'Login'}
-              </Link>
-              {/* <Link
-                px={4}
-                py={1}
-                rounded={'md'}
-                _hover={{
-                  textDecoration: 'none',
-                  bg: 'none',
-                }}
-                href='/'
-              >
-                Logout
-              </Link> */}
+              {true ?
+                <Link
+                  px={4}
+                  py={1}
+                  rounded={'md'}
+                  _hover={{
+                    textDecoration: 'none',
+                    bg: 'none',
+                  }}
+                  href='/'
+                >
+                  Login
+                </Link> :
+                <Link
+                  px={4}
+                  py={1}
+                  rounded={'md'}
+                  _hover={{
+                    textDecoration: 'none',
+                    bg: 'none',
+                  }}
+                  
+                  onClick={logout}
+                >
+                  Logout
+                </Link>
+              }
             </HStack>
           </HStack>
         </Flex>
