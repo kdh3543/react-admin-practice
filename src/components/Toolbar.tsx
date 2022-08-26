@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -32,16 +32,26 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 );
 
 export default function Simple() {
+
   const logout = () => {
-    setCookie('token','')
+    setCookie('myToken','')
     Router.push({
       pathname: '/'
     })
-  }
-  axios.defaults.headers.common['Authorization'] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwODk3NzY2LCJleHAiOjE2NjM0ODk3NjZ9.cMs3ECnAfpNLzrxUSP_joTLSgvWuEywVsdq2xrKwmr0`
+  };
+
+  const [toolbarRender, setToolbarRender] = useState(true);
+
+  useEffect(() => {
+    if( getCookie('myToken') ) {
+      setToolbarRender(false);
+    }else {
+      setToolbarRender(true);
+    }
+  });
+
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const cook = getCookie('token')
-  // console.log(cook)
+
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -66,14 +76,14 @@ export default function Simple() {
                 Logo
               </Link>
             </Box>
-            {true ? (<HStack
+            {toolbarRender ? '' : (<HStack
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
               {Links.map((link) => (
                 <NavLink key={link}>{link}</NavLink>
               ))}
-            </HStack>): ''}
+            </HStack>)}
             
           </HStack>
           <HStack spacing={8} alignItems={'center'}>
@@ -81,7 +91,7 @@ export default function Simple() {
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
-              {true ?
+              {toolbarRender ?
                 <Link
                   px={4}
                   py={1}
@@ -104,6 +114,7 @@ export default function Simple() {
                   }}
                   
                   onClick={logout}
+                  href='/'
                 >
                   Logout
                 </Link>

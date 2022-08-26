@@ -42,7 +42,7 @@ export default function Test() {
         Authorization: `Bearer ${getCookie('myToken')}`
       }
     })
-
+    console.log(res);
     // const res = await axios.get(`https://dev-admin.luxon.run/user?order=ASC&page=${page}&take=10`);
     setDataLength(res.data.meta.itemCount);
     setUserData(res.data.data);

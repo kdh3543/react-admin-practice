@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query';
 
-import { MutationHookParams } from '@apis/type';
+import { MutationHookParams } from '../type';
 
 import profileApi from './ProfileApi';
 

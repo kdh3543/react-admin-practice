@@ -1,8 +1,7 @@
 import { AxiosInstance } from 'axios';
 
-import instance from '@apis/_axios/instance';
-
-import { getToken } from '@utils/localStorage/token';
+import instance from '../_axios/instance';
+import { getToken } from '../../localStorage/token';
 
 import {
   ProfileReturnType,

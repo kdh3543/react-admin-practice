@@ -10,18 +10,11 @@ import { Cookies } from 'react-cookie'
 
 import UserInfoPage from '../../components/user/firstUserPage';
 import SecondUserPage from '../../components/user/secondUserPage';
-
+import { getCookie } from "../../utils/cookie";
 
 const UserInfo = () => {
 
-  const cookies = new Cookies()
-
-  cookies.set('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwNzE1MjgwLCJleHAiOjE2NjMzMDcyODB9.zBgx2E8bjwcfH_zGGejuQJhWmeHFHKF2DOM8SLsANsA')
-  const token = cookies.get('token')
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
   const router = useRouter();
-  console.log(router.query);
   const [userDatas, setUserDatas] = useState<any>({
     connects: [],
     profile: {},
@@ -30,10 +23,18 @@ const UserInfo = () => {
 
   const infos = async () => {
     try {
-      const res = await axios.get(`https://dev-admin.luxon.run/user/${router.query.user}`);
+      const res = await axios({
+        method: 'get',
+        url: `https://dev-admin.luxon.run/user/${router.query.user}`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${getCookie('myToken')}`
+        }
+      })
       console.log(res);
       setUserDatas({connects: res.data.data.connects, profile: res.data.data.profile, user: res.data.data.user});
     } catch (err) {
+      router.back();
       console.log(err);
     }
   }

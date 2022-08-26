@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 
-import { QueryHookParams } from '@apis/type';
+import { QueryHookParams } from '../type';
 
 import profileApi from './ProfileApi';
 
