@@ -1,18 +1,19 @@
-import axios from 'axios'
-import { Key, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container, Flex } from '@chakra-ui/react'
 import Admins from '../components/admin/Admins';
 import AdminHead from '../components/admin/AdminHead';
 import PaginationFunc from "../components/utils/PaginationFunc";
+import member from '../apis/member';
+
+const {getAdmins} = member()
 
 export default function Signup() {
-  // axios.defaults.headers.common['Authorization'] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwODk3NzY2LCJleHAiOjE2NjM0ODk3NjZ9.cMs3ECnAfpNLzrxUSP_joTLSgvWuEywVsdq2xrKwmr0`
   const [admin, setAdmin] = useState<any>([])
   const [page, setPage] = useState(1)
   const [dataLength, setDataLength] = useState(0)
-  const getAdmins = async () => {
+  const getAdminInfor = async () => {
     try {
-      const res = await axios.get(`https://dev-admin.luxon.run/admin/user?order=ASC&page=${page}&take=10`)
+      const res = await getAdmins(page)
 
       setDataLength(res.data.meta.itemCount)
       setAdmin(res.data.data)
@@ -22,11 +23,10 @@ export default function Signup() {
   }
   
   useEffect(() => {
-    getAdmins()
+    getAdminInfor()
   },[page])
 
   const handlePageChange = (page:any) => {
-    console.log(page);
     setPage(page)
   }
   

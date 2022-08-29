@@ -15,7 +15,7 @@ import { getCookie, setCookie } from '../utils/cookie';
 import axios from 'axios';
 import Router from 'next/router';
 
-const Links = ['admins', 'users', 'Team'];
+const Links = ['Admins', 'Users', 'AirDrop', 'Error'];
 
 const NavLink = ({ children }: { children: ReactNode }) => (
   <Link
@@ -48,7 +48,7 @@ export default function Simple() {
     }else {
       setToolbarRender(true);
     }
-  });
+  },[getCookie('myToken')]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -71,7 +71,7 @@ export default function Simple() {
                   textDecoration: 'none',
                   bg: 'none',
                 }}
-                href='/'
+                href={toolbarRender ? '/' : 'Admins'}
               >
                 Logo
               </Link>

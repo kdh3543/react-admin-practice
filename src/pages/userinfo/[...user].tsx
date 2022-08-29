@@ -2,16 +2,13 @@ import {
   Center,
   Button,
 } from '@chakra-ui/react';
-
-import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Cookies } from 'react-cookie'
 
 import UserInfoPage from '../../components/user/firstUserPage';
 import SecondUserPage from '../../components/user/secondUserPage';
-import { getCookie } from "../../utils/cookie";
-
+import member from '../../apis/member';
+const { getUserInfo } = member()
 const UserInfo = () => {
 
   const router = useRouter();
@@ -22,21 +19,9 @@ const UserInfo = () => {
   });
 
   const infos = async () => {
-    try {
-      const res = await axios({
-        method: 'get',
-        url: `https://dev-admin.luxon.run/user/${router.query.user}`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('myToken')}`
-        }
-      })
-      console.log(res);
-      setUserDatas({connects: res.data.data.connects, profile: res.data.data.profile, user: res.data.data.user});
-    } catch (err) {
-      router.back();
-      console.log(err);
-    }
+    const res = await getUserInfo(router.query.user)
+    console.log(res)
+    setUserDatas({connects: res.data.data.connects, profile: res.data.data.profile, user: res.data.data.user});
   }
 
   useEffect(() => {

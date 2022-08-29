@@ -13,40 +13,32 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
-import { getCookie } from "../../utils/cookie";
+import member from "../../apis/member";
 
 export default function AdminInfor() {
-  axios.defaults.headers.common['Authorization'] = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoidGVzdDEyMzRAbmF2ZXIuY29tIiwicm9sZXMiOiJBRE1JTiIsImFjdGl2YXRlZEF0IjoiMjAyMi0wNS0xN1QwODozNjo1NC4wMDBaIiwiaWF0IjoxNjYwODk3NzY2LCJleHAiOjE2NjM0ODk3NjZ9.cMs3ECnAfpNLzrxUSP_joTLSgvWuEywVsdq2xrKwmr0`
-  // const cook = getCookie('token')
-  // axios.defaults.headers.common['Authorization'] = `Bearer ${cook}`
+  const {modifyAdminInfo, getAdminInfo} = member()
   const titles = ['id','Email','createdAt','updatedAt','deletedAt','activatedAt','roles']
   const [adInfo, setAdInfo] = useState<any>({})
   const [grade, setGrade] = useState<any>('')
   const router = useRouter()
   
-  const getAdminInfo = async () => {
-    
-    await axios.get(`https://dev-admin.luxon.run/admin/user/${router.query.admin}`).then((res) => {
-      if (res.data.code===0) {
-        setAdInfo(res.data.data)  
-      }
-    })
+  const infos = async () => {
+    const res = await getAdminInfo(router.query.admin)
+    if (res.data.code === 0) {
+      setAdInfo(res.data.data)  
+    }
   }
   useEffect(() => {
-    getAdminInfo()  
-  },[router.query,adInfo])
+    infos()  
+  },[router.query, adInfo])
   
   const modifyGrade = async () => {
     if (grade) {
-      const sendNum = parseInt(router.query.admin);
-      await axios.put(`https://dev-admin.luxon.run/admin/user/role`, {
-        adminUserId: sendNum,
-        roles: grade
-      }).then((res) => {
-        if (res.data.code === 0) {
-          adInfo.roles = grade
-        }
-      })
+      const sendId = parseInt(router.query.admin);
+      const res = await modifyAdminInfo(sendId, grade)
+      if (res.data.code === 0) {
+        setAdInfo({...adInfo, roles:grade})
+      }
     }
   }
 
