@@ -9,21 +9,39 @@ export default function Error() {
   useEffect(() => {
     getErrorMsg()
   }, [])
-  const getErrorMsg = async () => {
+  const getErrorMsg = async () => {  
     const res = await getError()
     console.log(res.data)
-    setErrData((prevState:any) =>  ({...prevState, data:res.data})  )
-    
+    setErrData({...res.data})
   }
-  console.log(errData.data)
+  console.log(errData)
   return (
     <>
-      {Object.values(errData.data).map((data: any, index: Number) => { 
-        <Box key={data}>
-          {data}1
-        </Box>  
+      <Box
+        w={'80%'}
+        mx={'auto'}
+        mt={'30px'}
+      >
+      {Object.entries(errData).map((data: any, index: Number) => { 
+        return (
+          <Flex
+            border={'1px solid black'}
+            borderRadius={'20px'}
+            textAlign={'center'}
+            fontSize={'20px'}
+            mt={'5px'}
+            key={data}
+          >
+            <Box w={'80%'}>
+              {data[0]}
+            </Box>
+            <Box w={'20%'}>
+              {data[1]}
+            </Box>
+          </Flex>
+        )
       })}
-      error
+      </Box>
     </>
   )
 }
