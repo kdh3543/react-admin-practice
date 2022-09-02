@@ -71,7 +71,7 @@ export default function Simple() {
                   textDecoration: 'none',
                   bg: 'none',
                 }}
-                href={toolbarRender ? '/' : 'Admins'}
+                href={toolbarRender ? '/' : 'admins'}
               >
                 Logo
               </Link>
