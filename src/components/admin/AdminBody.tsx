@@ -17,6 +17,7 @@ export default function Admins(props: any) {
   }
   return (
     <>
+      
       {props.adminData.map((data:any, index:Number) => (
         <Box
           key={data.id}
