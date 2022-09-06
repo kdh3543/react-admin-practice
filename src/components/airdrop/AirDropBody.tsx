@@ -1,88 +1,90 @@
 import {
   Box,
   Button,
-  color,
-  Flex,
-  Image,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-  Text,
-  CloseButton
+  Flex
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import nft from '../../apis/nft'
-import { open } from '../hooks/store/slice/deleteSlice'
+import slice from '../hooks/store/slice/deleteSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import DeleteAirDropModal from '../modal/deleteAirDropModal'
+import nft from '../../apis/nft'
+import { useRouter } from "next/router";
 
-const {deleteAirDrop} = nft()
-export default function AirDropBody(props:any) {
+const { deleteAirDrop } = nft()
+const reduxSlice = slice()
+export default function AirDropBody(props: any) {
+  const router = useRouter()
   const dispatch = useDispatch()
-  const [delId, setDelId] = useState(0)
+  const [delId, setDelId] = useState('')
   
-  const openDelete = async () => {
-    
-    dispatch(open(true))
-    setDelId(props.data.id)
-    console.log(props.data.id)
+  const openDelete = (index:any) => {
+    dispatch(reduxSlice.deleteSlice.actions.open(true))
+    setDelId(index)
   }
   const closeModal = () => {
-    dispatch(open(false))
-    console.log(delId)
+    dispatch(reduxSlice.deleteSlice.actions.open(false))
   }
-  const onDelete = async (id:any) => {
+
+  const onDelete = async (id: any) => {
+    console.log(props.onDelete())
     console.log(id)
-    // const res = await deleteAirDrop(props.data.id)
-    // console.log(res)
+    // dispatch(deleteSlice.actions.open(false))
+    
+    // await deleteAirDrop(id).then((res) => {
+    //   dispatch(deleteSlice.actions.open(false))
+      
+    // }).catch((err) => {
+    //   console.log(err)
+    // })
   }
-  const modalOpen = useSelector((state:any) => {
-    return state.openDelete.value
-  })
+  const openAirdrop = (id: any) => {
+    router.push({
+      pathname: `/airdrop/${id}`,
+      query: {
+        id
+      },
+    },`/airdrop/${id}`)
+  }
   
   return (
     <>
-      <Box w={'5%'}>{props.data.id}</Box>
-      <Box w={'20%'}>{props.data.title}</Box>
-      <Box w={'10%'}>{props.data.contractId}</Box>
-      <Box w={'15%'}>{props.data.targetCount}</Box>
-      <Box w={'25%'}>{props.data.createdAt}</Box>
-      <Box w={'10%'}>{props.data.state}</Box>
-      <Box w={'15%'}>
-        <Button onClick={openDelete} cursor={'default'} borderRadius={'10px'} colorScheme='red' size='sm'>
-          Delete
-        </Button>
-        {/* <DeleteAirDropModal closeModal={closeModal} onDelete={onDelete}/> */}
-        <Modal isOpen={modalOpen} onClose={closeModal}>
-        <ModalOverlay backgroundColor={'blackAlpha.100'}/>
-        <ModalContent
-          w={'402px'}
-          h={'280px'}
-          pt={'38px'}
-          px={'25px'}
-          pb={'30px'}
-          borderRadius={'10px'}
-          alignSelf={'center'}
+      {props.list.map((data: any, index: Number) => (
+        <Flex
+          onClick={() => openAirdrop(data.id)}
+          cursor={'pointer'}
+          alignItems={'center'}
+          key={data.id}
+          textAlign={'center'}
+          mt={'10px'}
+          border={'1px solid black'}
+          borderRadius={'15px'}
+          p={'5px'}
         >
-          <ModalBody p={'0px'} m={'0px'}>
-            <Flex flexDir={'column'} align={'center'} justify={'center'}>
-              <CloseButton onClick={closeModal} position={'absolute'} top={'5px'} right={'5px'}/>
-              <Text fontWeight={'extrabold'} color={'primary.500'}>
-                {'DELETE AIRDROP LIST'}
-              </Text>
-              <Text mt={'50px'} fontSize={'20px'}>
-                {'ARE YOU SURE DELETE LIST?'}
-              </Text>
-              <Button onClick={onDelete(delId)} mt={'50px'}>
-                DELETE
-              </Button>
-              
-            </Flex>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-      </Box>
+          <Box w={'5%'}>{data.id}</Box>
+          <Box w={'20%'}>{data.title}</Box>
+          <Box w={'10%'}>{data.contractId}</Box>
+          <Box w={'15%'}>{data.targetCount}</Box>
+          <Box w={'25%'}>{data.createdAt}</Box>
+          <Box w={'10%'}>{data.state}</Box>
+          <Box w={'15%'}>
+            <Button
+              onClick={() => openDelete(data.id)}
+              cursor={'default'}
+              borderRadius={'10px'}
+              colorScheme='red'
+              size='sm'
+            >
+              Delete
+            </Button>
+            <DeleteAirDropModal
+              delId={delId}
+              closeModal={closeModal}
+              onDelete={() => props.onDelete(props.delId)}
+            />
+          </Box>
+        </Flex>
+      ))}
+      
     </>
   )
 }

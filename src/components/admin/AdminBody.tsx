@@ -1,13 +1,12 @@
 import { Box } from '@chakra-ui/react'
 import axios from 'axios';
 import { useRouter } from "next/router";
-import { getCookie,setCookie } from '../../utils/cookie';
-
+import { getCookie, setCookie } from '../../utils/cookie';
 
 export default function Admins(props: any) {
   // console.log(getCookie('myToken'))
   const router = useRouter()
-  const openAdminInfor = (id:any) => {
+  const openAdminInfor = (id: any) => {
     router.push({
       pathname: `/adminInfo/${id}`,
       query: {
@@ -17,7 +16,6 @@ export default function Admins(props: any) {
   }
   return (
     <>
-      
       {props.adminData.map((data:any, index:Number) => (
         <Box
           key={data.id}

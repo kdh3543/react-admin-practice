@@ -13,26 +13,21 @@ export default function AirDrop() {
   const [dataLength, setDataLength] = useState(0)
 
   const getAirDropList = async () => {
-    try {
-      const res = await getDropList(order, page)
-      setList(res.data.data)
-      setDataLength(res.data.meta.itemCount)
-    } catch (e) {
-      console.log(e)
-    }
+    const res = await getDropList(order, page)
+    setList(res.data.data)
+    setDataLength(res.data.meta.itemCount)
   }
 
   useEffect(() => {
     getAirDropList()
   },[page])
 
-  const testDown = (e:any) => {
-    e.stopPropagation()
-    console.log('testDown')
+  const onDelete = async (id:any) => {
+    console.log(id)
+    console.log('here')
   }
-  const testUp = (e:any) => {
-    e.stopPropagation()
-    console.log('testUp')
+  const handlePageChange = (page:any) => {
+    setPage(page)
   }
 
   return (
@@ -45,11 +40,11 @@ export default function AirDrop() {
         <AirDropTitle />
       </Flex>
       <hr />
-      {list.map((data: any, index: Number) => (
-        <Flex onClick={testDown} cursor={'pointer'} alignItems={'center'} key={data.id} textAlign={'center'} mt={'10px'} border={'1px solid black'} borderRadius={'15px'} p={'5px'}>
-          <AirDropBody index={index} data={data} />
-        </Flex>
-      ))}
+      
+      <AirDropBody list={list} onDelete={onDelete} />
+      <Flex justifyContent={'center'}>
+        <PaginationFunc page={page} dataLength={dataLength} activePage={handlePageChange} />
+      </Flex>
       
     </Container>
   )

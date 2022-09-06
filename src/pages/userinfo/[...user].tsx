@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import UserInfoPage from '../../components/user/firstUserPage';
 import SecondUserPage from '../../components/user/secondUserPage';
 import member from '../../apis/member';
+import { getCookie } from "../../utils/cookie";
 const { getUserInfo } = member()
 const UserInfo = () => {
 
@@ -19,13 +20,20 @@ const UserInfo = () => {
   });
 
   const infos = async () => {
-    const res = await getUserInfo(router.query.user)
-    console.log(res)
-    setUserDatas({connects: res.data.data.connects, profile: res.data.data.profile, user: res.data.data.user});
+    console.log(getCookie('myToken'))
+    console.log(router.query)
+    if (router.query.user) {
+      const res = await getUserInfo(router.query.user)
+      setUserDatas({connects: res.data.data.connects, profile: res.data.data.profile, user: res.data.data.user});  
+    }
+    
   }
 
   useEffect(() => {
-    infos();
+    if (getCookie('myToken')) {
+      infos();  
+    }
+    
   }, [router.query.user])
 
   const back = () => {

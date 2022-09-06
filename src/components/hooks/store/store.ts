@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import deleteSlice from "./slice/deleteSlice";
+import slice from "./slice/deleteSlice";
 
 const store = configureStore({
   reducer: {
-    openDelete:deleteSlice.reducer
+    openDelete: slice().deleteSlice.reducer,
   }
+  
 })
 export default store;

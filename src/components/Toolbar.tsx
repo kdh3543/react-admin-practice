@@ -45,8 +45,10 @@ export default function Simple() {
   useEffect(() => {
     if( getCookie('myToken') ) {
       setToolbarRender(false);
+      console.log('???false???')
     }else {
       setToolbarRender(true);
+      console.log('???true???')
     }
   },[getCookie('myToken')]);
 
@@ -71,7 +73,7 @@ export default function Simple() {
                   textDecoration: 'none',
                   bg: 'none',
                 }}
-                href={toolbarRender ? '/' : 'admins'}
+                href={toolbarRender ? '/' : 'Admins'}
               >
                 Logo
               </Link>

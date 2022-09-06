@@ -24,13 +24,33 @@ export default function nft() {
     try {
       return await axios({
         method: 'delete',
-        url: `${apiUrl}/airdrop-centralization-task/${id}`
+        url: `${apiUrl}/airdrop-centralization-task/${id}`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${getCookie('myToken')}`
+        }
       })
       
     } catch (err: any) {
       return err
     } 
   }
+  const getAirdropInfo = async (data: any) => {
+    console.log(getCookie('myToken'))
+    console.log(data)
+    try {
+      return await axios({
+        method: 'get',
+        url: `${apiUrl}/airdrop-user?taskId=${data.id}&order=${data.order}&page=${data.page}&take=10`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${getCookie('myToken')}`
+        }
+      })
+    } catch (err: any) {
+      return err
+    }
+  }
 
-  return { getDropList, deleteAirDrop }
+  return { getDropList, deleteAirDrop, getAirdropInfo }
 }

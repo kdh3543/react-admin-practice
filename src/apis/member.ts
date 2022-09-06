@@ -56,7 +56,8 @@ export default function member() {
       return err
     }
   }
-  const getAdminInfo = async (adminId:any) => {
+  const getAdminInfo = async (adminId: any) => {
+    console.log(getCookie('myToken'))
     try {
       return await axios({
         method: 'get',

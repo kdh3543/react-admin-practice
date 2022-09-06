@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
 import member from "../../apis/member";
+import { getCookie } from "../../utils/cookie";
 
 export default function AdminInfor() {
   const {modifyAdminInfo, getAdminInfo} = member()
@@ -23,16 +24,24 @@ export default function AdminInfor() {
   const router = useRouter()
   
   const infos = async () => {
-    const res = await getAdminInfo(router.query.admin)
-    if (res.data.code === 0) {
-      setAdInfo(res.data.data)  
+    console.log(getCookie('myToken'))
+    console.log(router.query)
+    if (router.query.admin) {
+      const res = await getAdminInfo(router.query.admin)
+      if (res.data.code === 0) {
+        setAdInfo(res.data.data)  
+      }
     }
+    
   }
   useEffect(() => {
-    infos()  
-  },[router.query, adInfo])
+    if (getCookie('myToken')) {
+      infos() 
+    }
+  },[router.query])
   
   const modifyGrade = async () => {
+    console.log(getCookie('myToken'))
     if (grade) {
       const sendId = parseInt(router.query.admin);
       const res = await modifyAdminInfo(sendId, grade)
@@ -48,7 +57,6 @@ export default function AdminInfor() {
 
   const goBack = () => {
     router.back();
-    // history.back(); 거기서 거기 ~
   }
   return (
     <Center py={'100px'}>
