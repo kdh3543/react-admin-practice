@@ -18,7 +18,7 @@ export default function Test() {
   const [page, setPage] = useState<number>(1);
   const [dataLength, setDataLength] = useState<number>(0);
   const [order, setOrder] = useState('DESC')
-  
+  const [searchResult, setSearchResult] = useState(true)
 
   useEffect(() => {
     getUserData();
@@ -26,9 +26,12 @@ export default function Test() {
 
   // get user list
   const getUserData = async () => {
-    const res = await getUsers(order,page)
-    setDataLength(res.data.meta.itemCount);
-    setUserData(res.data.data);
+    await getUsers(order, page).then((res) => {
+      console.log(res)
+      setDataLength(res.data.meta.itemCount);
+      setUserData(res.data.data);  
+    })
+    
   }
 
   // pagination
@@ -55,12 +58,26 @@ export default function Test() {
   }
 
   // search func
-  const onSearch = async (data:any) => {
-    await searchByAddress(data).then((res) => {
-      console.log(res)
-      // setUserData(res.data.data.user)
-      // setDataLength(0)
-    })
+  const onSearch = async (data: any) => {
+
+    if (data) {
+      await searchByAddress(data).then((res) => {
+        console.log(res)
+        // 
+        if (res.data.code === 101) {
+          setSearchResult(false)
+        } else {
+          setSearchResult(true)
+          setPage(1)
+          setUserData([res.data.data.user])
+          setDataLength(1)
+        }
+      })
+    } else {
+      setSearchResult(true)
+      await getUserData()
+    }
+    
     
   }
   console.log(userData)
@@ -77,7 +94,23 @@ export default function Test() {
           <UserHead />
         </Flex>
         <hr />
-        <UserBody userData={userData} moveInfo={moveInfo}/>
+        {searchResult ? 
+          <UserBody
+            userData={userData}
+            moveInfo={moveInfo}
+          />
+          :
+          <Box
+            textAlign={'center'}
+            mt={'20px'}
+            fontSize={'20px'}
+            color={'red'}
+            fontWeight={'bold'}
+          >
+            it is no result of search
+          </Box>
+        }
+        
         <Flex justifyContent={'center'}>
           <PaginationFunc page={page} dataLength={dataLength} activePage={activePage} />
           <SelectOrder onSelect={onSelect}/>
