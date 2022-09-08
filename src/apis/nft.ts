@@ -51,6 +51,45 @@ export default function nft() {
       return err
     }
   }
+  const getContractLists = async () => {
+    try {
+      return await axios({
+        method: 'get',
+        url: `${apiUrl}/contract/simple`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${getCookie('myToken')}`
+        }
+      })
+    } catch (err: any) {
+      return err
+    }
+  }
+  const register = async (data:any) => {
+    const frm = new FormData()
+    frm.append('title', data.title)
+    frm.append('contractId', data.contract)
+    frm.append('file',data.file)
+    try {
+      return await axios({
+        method: 'post',
+        url: `${apiUrl}/airdrop-centralization-task/register`,
+        data: frm,
+        headers: {
+          'content-Type': `multipart/form-data`,
+          Authorization: `Bearer ${getCookie('myToken')}`
+        }
+      })
+    } catch (err: any) {
+      return err
+    }
+  }
 
-  return { getDropList, deleteAirDrop, getAirdropInfo }
+  return {
+    getDropList,
+    deleteAirDrop,
+    getAirdropInfo,
+    getContractLists,
+    register
+  }
 }

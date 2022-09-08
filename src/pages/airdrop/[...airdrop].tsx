@@ -1,9 +1,11 @@
-import { Container,Box,Stack,Link } from "@chakra-ui/react"
+import { Container,Box,Stack,Link, Button } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import nft from "../../apis/nft"
 import NextLink from "next/link"
 import { getCookie } from "../../utils/cookie"
+import InfoBody from "../../components/airdrop/Info/InfoBody"
+import InfoHead from "../../components/airdrop/Info/InfoHead"
 
 const {getAirdropInfo} = nft()
 const AirdropInfo = () => {
@@ -28,59 +30,24 @@ const AirdropInfo = () => {
       }
     }
   }
+  const toAirDrop = () => {
+    router.push('/AirDrop')
+  }
   useEffect(() => {
     if (getCookie('myToken')) {
       getAirdrop()  
     }
-    
   },[router.query.airdrop])
   return (
     <>
       <Container maxW={'1200px'} mx={'auto'} mt={'40px'}>
-        <Box display={'flex'} textAlign={'center'} mb={'10px'}>
-          <Box w={'10%'}>Id</Box>
-          <Box w={'10%'}>Main Net</Box>
-          <Box w={'30%'}>Public Key</Box>
-          <Box w={'10%'}>State</Box>
-          <Box w={'10%'}>Token Id</Box>
-          <Box w={'10%'}>Amount</Box>
-          <Box w={'20%'}>TX Hash</Box>
-        </Box>
+        <InfoHead />
         <hr />
-        {info.map((data: any, index: any) => (
-          <Box
-            borderRadius={'15px'}
-            p={'5px'}
-            border={'1px solid black'}
-            fontSize={'12px'}
-            display={'flex'}
-            key={data.id}
-            textAlign={'center'}
-            mt={'10px'}
-          >
-            <Box w={'10%'}>{data.id}</Box>
-            <Box w={'10%'}>MainNet</Box>
-            <Box w={'30%'}>{data.publicKey}</Box>
-            <Box w={'10%'}>{data.state}</Box>
-            <Box w={'10%'}>{data.tokenId}</Box>
-            <Box w={'10%'}>{data.amount}</Box>
-            
-            {!data.txHash
-              ? <Box w={'20%'}>null</Box>
-            : 
-            <NextLink href={data.txHash} passHref>
-              <Link
-                  overflowX={'hidden'}
-                  color='blue.500'
-                  w={'20%'}
-              >{(data.txHash).substr(0, 20) + '...'}
-                </Link>
-            </NextLink>
-            }
-              
-            
-          </Box>
-        ))}
+        <InfoBody info={info} />
+        <Box mt={'10px'} textAlign={'right'}>
+          <Button onClick={toAirDrop} >Back</Button>
+        </Box>
+        
         
       </Container>
     </>

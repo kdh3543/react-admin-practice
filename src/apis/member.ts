@@ -12,11 +12,11 @@ export default function member() {
     }
   }
   
-  const getUsers = async (page: any) => {
+  const getUsers = async (order: String, page: any) => {
     try {
       return await axios({
         method: 'get',
-        url: `${apiUrl}/user?order=ASC&page=${page}&take=10`,
+        url: `${apiUrl}/user?order=${order}&page=${page}&take=10`,
         headers: {
           'content-Type': 'application/json',
           Authorization: `Bearer ${getCookie('myToken')}`
@@ -42,11 +42,11 @@ export default function member() {
     }
   }
 
-  const getAdmins = async (page: any) => {
+  const getAdmins = async (order: String, page: Number) => {
     try {
       return await axios({
         method: 'get',
-        url: `${apiUrl}/admin/user?order=ASC&page=${page}&take=10`,
+        url: `${apiUrl}/admin/user?order=${order}&page=${page}&take=10`,
         headers: {
           'content-Type': 'application/json',
           Authorization: `Bearer ${getCookie('myToken')}`
@@ -57,7 +57,6 @@ export default function member() {
     }
   }
   const getAdminInfo = async (adminId: any) => {
-    console.log(getCookie('myToken'))
     try {
       return await axios({
         method: 'get',
@@ -89,8 +88,49 @@ export default function member() {
     } catch (err:any) {
       return err
     }
-    
   }
   
-  return {login, getUsers, getAdmins, getUserInfo, getAdminInfo, modifyAdminInfo}
+  const toActivate = async (data:any) => {
+    try {
+      return await axios({
+        method: 'put',
+        url: `${apiUrl}/admin/user/activate`,
+        data: {
+          adminUserId: data.adminUserId,
+          activate: data.activate,
+        },
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${getCookie('myToken')}`
+        }
+      })
+    } catch (err: any) {
+      return err
+    }
+  }
+
+  const searchByAddress = async (data: any) => {
+    try {
+      return await axios({
+        method: 'get',
+        url: `${apiUrl}/user/address/${data}`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${getCookie('myToken')}`
+        }
+      })
+    } catch (err: any) {
+      return err
+    }
+  }
+  return {
+    login,
+    getUsers,
+    getAdmins,
+    getUserInfo,
+    getAdminInfo,
+    modifyAdminInfo,
+    toActivate,
+    searchByAddress
+  }
 }

@@ -1,0 +1,11 @@
+.title {
+  width: 33%;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  
+}
+.title:hover {
+  border-bottom: 2px solid black;
+  box-shadow: 1px black;
+}

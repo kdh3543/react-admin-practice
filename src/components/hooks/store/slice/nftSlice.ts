@@ -6,13 +6,21 @@ export default function slice() {
     initialState: { value: false },
     reducers: {
       open: (state, action) => {
-        console.log(action)
         state.value = action.payload
       }
     }
   });
+  const registerSlice = createSlice({
+    name: 'registerSlice',
+    initialState: { value: false },
+    reducers: {
+      open: (state, action) => {
+        state.value = action.payload
+      }
+    }
+  })
 
-  return {deleteSlice}
+  return {deleteSlice, registerSlice}
 }
 
 

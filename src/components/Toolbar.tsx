@@ -45,10 +45,8 @@ export default function Simple() {
   useEffect(() => {
     if( getCookie('myToken') ) {
       setToolbarRender(false);
-      console.log('???false???')
     }else {
       setToolbarRender(true);
-      console.log('???true???')
     }
   },[getCookie('myToken')]);
 

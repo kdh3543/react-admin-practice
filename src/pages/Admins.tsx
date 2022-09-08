@@ -4,17 +4,21 @@ import AdminBody from '../components/admin/AdminBody';
 import AdminHead from '../components/admin/AdminHead';
 import PaginationFunc from "../components/utils/PaginationFunc";
 import member from '../apis/member';
+import SelectOrder from '../components/utils/SelectOrder';
 
-const {getAdmins} = member()
+const {getAdmins, toActivate} = member()
 
 export default function Signup() {
   const [admin, setAdmin] = useState<any>([])
   const [page, setPage] = useState(1)
   const [dataLength, setDataLength] = useState(0)
+  const [order, setOrder] = useState('DESC')
+
+  // get admin list
   const getAdminInfor = async () => {
     try {
-      const res = await getAdmins(page)
-
+      const res = await getAdmins(order, page)
+      console.log(res)
       setDataLength(res.data.meta.itemCount)
       setAdmin(res.data.data)
     } catch (e) {
@@ -24,10 +28,35 @@ export default function Signup() {
   
   useEffect(() => {
     getAdminInfor()
-  },[page])
+  }, [page,order])
 
-  const handlePageChange = (page:any) => {
+
+  //pagination
+  const handlePageChange = (page: any) => {
     setPage(page)
+  }
+
+  // activate to admin user
+  const onActivate = async (e:any,id:any, index:any) => {
+    e.stopPropagation();
+    const data = {
+      adminUserId:id,
+      activate: !admin[index].activatedAt
+    }
+    await toActivate(data).then(() => {
+      getAdminInfor()
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+  // select order(정렬)
+  const onSelect = async (e: any) => {
+    console.log(e.target.value)
+    setOrder(e.target.value)
+    const res = await getAdmins(order, page)
+    setAdmin(res.data.data)
+    setDataLength(res.data.meta.itemCount)
   }
   
   return (
@@ -36,14 +65,18 @@ export default function Signup() {
         maxW={'1200px'}
         mx={'auto'}
         mt={'40px'}
-        fontSize={'14px'}
+        position={'relative'}
       >
-        <AdminHead />
-        <AdminBody adminData={admin} />
+        <Flex textAlign={'center'} mt={'10px'} mb={'10px'}>
+          <AdminHead />
+        </Flex>
+        <hr />
+        <AdminBody adminData={admin} onActivate={onActivate}/>
+        <Flex justifyContent={'center'}>
+          <PaginationFunc page={page} dataLength={dataLength} activePage={handlePageChange} />
+          <SelectOrder onSelect={onSelect}/>
+        </Flex>
       </Container>
-      <Flex justifyContent={'center'}>
-        <PaginationFunc page={page} dataLength={dataLength} activePage={handlePageChange} />
-      </Flex>
     </>
   )
 }

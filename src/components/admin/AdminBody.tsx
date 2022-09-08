@@ -1,11 +1,13 @@
-import { Box } from '@chakra-ui/react'
+import { Box,Button } from '@chakra-ui/react'
 import axios from 'axios';
 import { useRouter } from "next/router";
+import { useEffect } from 'react';
 import { getCookie, setCookie } from '../../utils/cookie';
 
 export default function Admins(props: any) {
   // console.log(getCookie('myToken'))
   const router = useRouter()
+  
   const openAdminInfor = (id: any) => {
     router.push({
       pathname: `/adminInfo/${id}`,
@@ -14,41 +16,53 @@ export default function Admins(props: any) {
       }
     },`/adminInfo/${id}`)
   }
+  
   return (
-    <>
+    <Box mt={3}>
       {props.adminData.map((data:any, index:Number) => (
         <Box
           key={data.id}
           display={'flex'}
           alignItems={'center'}
           borderRadius={'15px'}
-          p={3}
+          p={2}
           mt={2}
           border={'1px solid black'}
           textAlign={'center'}
           cursor={'pointer'}
           onClick={() => { openAdminInfor(data.id) }}
+          fontSize={'13px'}
         >
-          <Box w={'10%'}>
-            {data.id}
-          </Box>
+          <Box w={'10%'}>{data.id}</Box>
+          <Box w={'20%'}>{data.email}</Box>
+          <Box w={'20%'}>{data.createdAt}</Box>
           <Box w={'20%'}>
-            {data.email}
+            {data.activatedAt ? data.activatedAt : 'null'}
           </Box>
-          <Box w={'20%'}>
-            {data.updatedAt}
-          </Box>
-          <Box w={'20%'}>
-            {data.createdAt}
-          </Box>
-          <Box w={'20%'}>
-            {data.deletedAt ? data.deletedAt : 'null'}
-          </Box>
-          <Box w={'10%'}>
-            {data.roles}
+          <Box w={'15%'}>{data.roles}</Box>
+          <Box w={'15%'}>
+            {data.activatedAt ? 
+              <Button
+                onClick={(e) => props.onActivate(e, data.id, index)}
+                cursor={'default'}
+                colorScheme='whatsapp'
+                size='sm'
+              >
+                Activated
+              </Button>
+              : 
+              <Button
+                cursor={'default'}
+                onClick={(e) => props.onActivate(e, data.id, index)}
+                colorScheme='red'
+                size='sm'
+              >
+                UnActivated
+              </Button>
+            }
           </Box>
         </Box>
       ))}
-    </>
+    </Box>
   )
 }

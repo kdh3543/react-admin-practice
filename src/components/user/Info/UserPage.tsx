@@ -9,10 +9,10 @@ import {
   ListItem,
   ListIcon,
 } from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { FaCircle } from 'react-icons/fa';
 
-const SecondUserPage = (props:any) => {
+const UserPage = (props:any) => {
 
   const PriceWrapper = ({ children }: { children: ReactNode }) => {
     return (
@@ -27,11 +27,10 @@ const SecondUserPage = (props:any) => {
       </Box>
     );
   }
-  console.log(props);
   const listArray = ['id', 'address', 'createdAt', 'updatedAt', 'deletedAt', 'droppedAt'];
-
+  
   return (
-    <Box py={12}>
+    <Box>
       <Stack
         direction={{ base: 'column', md: 'row' }}
         textAlign="center"
@@ -41,13 +40,13 @@ const SecondUserPage = (props:any) => {
         <PriceWrapper>
           <Box py={5} px={12}>
             <Text fontWeight="500" fontSize="2xl">
-              세부정보
+              User
             </Text>
             <HStack justifyContent="center">
               <List spacing={5} textAlign="start" px={12}>
                 {listArray.map((v: any) => {
                   return (
-                    <ListItem>
+                    <ListItem key={v}>
                       <ListIcon as={FaCircle} color="gray.400" />
                       {v}: {props.user[v] ? props.user[v] : "null"}
                     </ListItem>
@@ -69,4 +68,4 @@ const SecondUserPage = (props:any) => {
 }
 
 
-export default SecondUserPage;
+export default UserPage;
