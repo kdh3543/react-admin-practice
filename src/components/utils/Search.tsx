@@ -8,8 +8,8 @@ export default function Search(props:any) {
   }
   return (
     <>
-      <Flex alignItems={'center'} justifyContent={'right'}>
-        <Input onChange={searchAddr} w={'50%'} placeholder={'search address'} />
+      <Flex alignItems={'center'} justifyContent={'right'} w={'50%'}>
+        <Input onChange={searchAddr} placeholder={'search address'} />
         <Button onClick={() => props.onSearch(search)}>Search</Button>
       </Flex>
     </>

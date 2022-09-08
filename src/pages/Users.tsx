@@ -19,6 +19,7 @@ export default function Test() {
   const [dataLength, setDataLength] = useState<number>(0);
   const [order, setOrder] = useState('DESC')
   const [searchResult, setSearchResult] = useState(true)
+  const [totalUsers, setTotalUsers] = useState(0)
 
   useEffect(() => {
     getUserData();
@@ -30,6 +31,7 @@ export default function Test() {
       console.log(res)
       setDataLength(res.data.meta.itemCount);
       setUserData(res.data.data);  
+      setTotalUsers(res.data.meta.itemCount)
     })
     
   }
@@ -63,7 +65,6 @@ export default function Test() {
     if (data) {
       await searchByAddress(data).then((res) => {
         console.log(res)
-        // 
         if (res.data.code === 101) {
           setSearchResult(false)
         } else {
@@ -89,11 +90,15 @@ export default function Test() {
         position={'relative'}
       >
       <Flex width={'6xl'} mt={10} flexDirection={'column'}>
+        <Box>
+          total User: {totalUsers}
+        </Box>
         <Search onSearch={onSearch} />
         <Flex textAlign={'center'} mt={'20px'} mb={'10px'}>
           <UserHead />
         </Flex>
         <hr />
+        
         {searchResult ? 
           <UserBody
             userData={userData}
