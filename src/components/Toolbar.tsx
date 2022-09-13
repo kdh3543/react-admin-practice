@@ -15,7 +15,7 @@ import { getCookie, setCookie } from '../utils/cookie';
 import axios from 'axios';
 import Router from 'next/router';
 
-const Links = ['Admins', 'Users', 'AirDrop', 'Error'];
+const Links = ['Admins', 'Users', 'AirDrop', 'Event', 'Error'];
 
 const NavLink = ({ children }: { children: ReactNode }) => (
   <Link

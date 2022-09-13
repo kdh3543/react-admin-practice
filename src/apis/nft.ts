@@ -36,8 +36,6 @@ export default function nft() {
     } 
   }
   const getAirdropInfo = async (data: any) => {
-    console.log(getCookie('myToken'))
-    console.log(data)
     try {
       return await axios({
         method: 'get',
@@ -85,11 +83,43 @@ export default function nft() {
     }
   }
 
+  const exportFile = async (id: any) => {
+    try {
+      return await axios({
+        method: 'get',
+        url: `${apiUrl}/airdrop-centralization-task/export/${id}`,
+        headers: {
+          'content-Type': `multipart/form-data`,
+          Authorization: `Bearer ${getCookie('myToken')}`
+        }
+      })
+    } catch (err: any) {
+      return err
+    }
+  }
+
+  const runAirDrop = async (id: any) => {
+    try {
+      return await axios({
+        method: 'get',
+        url: `${apiUrl}/airdrop-centralization-task/${id}/duplicated`,
+        headers: {
+          'content-Type': `multipart/form-data`,
+          Authorization: `Bearer ${getCookie('myToken')}`
+        }
+      })
+    } catch (err: any) {
+      return err
+    }
+  }
+
   return {
     getDropList,
     deleteAirDrop,
     getAirdropInfo,
     getContractLists,
-    register
+    register,
+    exportFile,
+    runAirDrop
   }
 }

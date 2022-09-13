@@ -30,7 +30,6 @@ export default function Signup() {
     getAdminInfor()
   }, [page,order])
 
-
   //pagination
   const handlePageChange = (page: any) => {
     setPage(page)

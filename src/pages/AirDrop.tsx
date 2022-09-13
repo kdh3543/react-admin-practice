@@ -1,13 +1,13 @@
-import { Container, Flex, Box, Button, background, Select } from '@chakra-ui/react'
+import { Container, Flex, Box, Button } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import PaginationFunc from '../components/utils/PaginationFunc'
 import nft from '../apis/nft'
-import AirDropTitle from '../components/airdrop/AirDropHead'
 import AirDropBody from '../components/airdrop/AirDropBody'
 import { useDispatch } from 'react-redux'
 import slice from '../components/hooks/store/slice/nftSlice'
 import RegisterAirDropModal from '../components/modal/registerAirDropModal'
 import SelectOrder from '../components/utils/SelectOrder'
+import AirDropHead from '../components/airdrop/AirDropHead'
 
 const { getDropList, deleteAirDrop, register, getContractLists } = nft()
 const reduxSlice = slice()
@@ -25,6 +25,7 @@ export default function AirDrop() {
   // get list
   const getAirDropList = async () => {
     const res = await getDropList(order, page)
+    
     setList(res.data.data)
     setDataLength(res.data.meta.itemCount)
   }
@@ -76,7 +77,6 @@ export default function AirDrop() {
       contract: contract.id
     }
     await register(data).then((res) => {
-      console.log(res)
       dispatch(reduxSlice.registerSlice.actions.open(false))
       getAirDropList()
     })
@@ -85,6 +85,7 @@ export default function AirDrop() {
   // get contract list
   const getContractList = async () => {
     await getContractLists().then((res) => {
+      console.log(res)
       setContractData(res.data.data)
     })
   }
@@ -103,19 +104,9 @@ export default function AirDrop() {
       mt={'40px'}
       position={'relative'}
     >
-      <Box textAlign={'right'}>
-        <Button
-          size={'sm'}
-          borderRadius={'10px'}
-          colorScheme='purple'
-          onClick={openRegister}
-        >
-          Register
-        </Button>
-      </Box>
-      <Flex textAlign={'center'} mt={'10px'} mb={'10px'}>
-        <AirDropTitle />
-      </Flex>
+      
+      <AirDropHead openRegister={openRegister}/>
+      
       <hr />
       <AirDropBody list={list} onDelete={onDelete} />
       <Flex justifyContent={'center'}>

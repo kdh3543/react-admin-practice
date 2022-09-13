@@ -12,7 +12,7 @@ export default function member() {
     }
   }
   
-  const getUsers = async (order: String, page: any) => {
+  const getUsers = async (order: String, page: Number) => {
     try {
       return await axios({
         method: 'get',

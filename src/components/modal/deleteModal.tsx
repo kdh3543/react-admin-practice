@@ -51,7 +51,7 @@ export default function DeleteAirDropModal(props: any) {
                 right={'5px'}
               />
               <Text fontWeight={'extrabold'} color={'primary.500'}>
-                {'DELETE AIRDROP LIST'}
+                {'DELETE LIST'}
               </Text>
               <Text mt={'50px'} fontSize={'20px'}>
                 {'ARE YOU SURE DELETE LIST?'}

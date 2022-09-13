@@ -1,8 +1,5 @@
 import { Box,Button } from '@chakra-ui/react'
-import axios from 'axios';
 import { useRouter } from "next/router";
-import { useEffect } from 'react';
-import { getCookie, setCookie } from '../../utils/cookie';
 
 export default function Admins(props: any) {
   // console.log(getCookie('myToken'))

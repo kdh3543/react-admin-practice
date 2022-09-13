@@ -19,7 +19,7 @@ import slice from "../hooks/store/slice/nftSlice";
 import nft from "../../apis/nft";
 
 const {getContractLists} = nft()
-export default function DeleteAirDropModal(props: any) {
+export default function RegisterAirDropModal(props: any) {
   const [contractData, setContractData] = useState<any>([])
 
   // register modal
@@ -30,6 +30,7 @@ export default function DeleteAirDropModal(props: any) {
   // get contract list
   const getContractList = async () => {
     await getContractLists().then((res) => {
+      // console.log(res)
       setContractData(res.data.data)
     })
   }

@@ -5,9 +5,8 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import slice from '../hooks/store/slice/nftSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import DeleteAirDropModal from '../modal/deleteAirDropModal'
-import nft from '../../apis/nft'
+import { useDispatch } from 'react-redux'
+import DeleteAirDropModal from '../modal/deleteModal'
 import { useRouter } from "next/router";
 
 const reduxSlice = slice()
@@ -16,6 +15,7 @@ export default function AirDropBody(props: any) {
   const dispatch = useDispatch()
   const [delId, setDelId] = useState('')
   
+  // delete modal
   const openDelete = (e: any, index: any) => {
     e.stopPropagation();
     dispatch(reduxSlice.deleteSlice.actions.open(true))
@@ -27,11 +27,11 @@ export default function AirDropBody(props: any) {
   
   const openAirdrop = (id: any) => {
     router.push({
-      pathname: `/airdrop/${id}`,
+      pathname: `/airdropInfo/${id}`,
       query: {
         id
       },
-    },`/airdrop/${id}`)
+    },`/airdropInfo/${id}`)
   }
   
   return (
@@ -46,6 +46,7 @@ export default function AirDropBody(props: any) {
           mt={'10px'}
           border={'1px solid black'}
           borderRadius={'15px'}
+          fontSize={'13px'}
           p={'5px'}
         >
           <Box w={'5%'}>{data.id}</Box>
