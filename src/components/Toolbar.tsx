@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useState } from 'react';
 import {
+  Button,
   Box,
   Flex,
   HStack,
@@ -41,6 +42,12 @@ export default function Simple() {
       pathname: '/'
     })
   };
+
+  const toLogin = () => {
+    Router.push({
+      pathname: '/'
+    })
+  }
 
   const [toolbarRender, setToolbarRender] = useState(true);
 
@@ -89,43 +96,47 @@ export default function Simple() {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <Button
+                  _hover={{ backgroundColor: 'gray' }}
+                  background={'none'}
+                  borderRadius={'15px'}
+                  onClick={() => Router.push(`${link}`)}
+                  key={link}
+                >
+                  {link}
+                </Button>
               ))}
             </HStack>)}
             
           </HStack>
           <HStack spacing={8} alignItems={'center'}>
+            
             <HStack
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
               {toolbarRender ?
-                <Link
+                
+                <Button
                   px={4}
                   py={1}
-                  rounded={'md'}
-                  _hover={{
-                    textDecoration: 'none',
-                    bg: 'none',
-                  }}
-                  href='/'
+                  borderRadius={'15px'}
+                  _hover={{ backgroundColor: 'gray' }}
+                  background={'none'}
+                  onClick={toLogin}
                 >
                   Login
-                </Link> :
-                <Link
+                </Button> :
+                <Button
                   px={4}
                   py={1}
-                  rounded={'md'}
-                  _hover={{
-                    textDecoration: 'none',
-                    bg: 'none',
-                  }}
-                  
+                  _hover={{ backgroundColor: 'gray' }}
+                  background={'none'}
+                  borderRadius={'15px'}
                   onClick={logout}
-                  href='/'
                 >
                   Logout
-                </Link>
+                </Button>
               }
             </HStack>
           </HStack>
@@ -135,7 +146,14 @@ export default function Simple() {
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <Button
+                  _hover={{ backgroundColor: 'gray' }}
+                  background={'none'}
+                  onClick={() => Router.push(`${link}`)}
+                  key={link}
+                >
+                  {link}
+                </Button>
               ))}
             </Stack>
           </Box>

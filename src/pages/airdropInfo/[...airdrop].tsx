@@ -8,10 +8,10 @@ import InfoHead from "../../components/airdrop/Info/InfoHead"
 import PaginationFunc from "../../components/utils/PaginationFunc";
 import fileDownload from "js-file-download"
 import PKeyModal from "../../components/modal/pKeyModal"
-import eventSlice from "../../components/hooks/store/slice/eventSlice"
+import slice from "../../components/hooks/store/slice/eventSlice"
 import { useDispatch } from 'react-redux'
 
-const reduxSlice = eventSlice()
+const eventSlice = slice()
 const {getAirdropInfo, exportFile, airDropTokenIdExist, run} = nft()
 const AirdropInfo = (props:any) => {
   const dispatch = useDispatch()
@@ -77,16 +77,16 @@ const AirdropInfo = (props:any) => {
     await airDropTokenIdExist(router.query.airdrop).then((res:any) => {
       if(res.data.data.taskIds.length==0){
         setModalStatus(true)
-        dispatch(reduxSlice.openSlice.actions.open(true))
+        dispatch(eventSlice.openSlice.actions.open(true))
       } else {
         setModalStatus(false)
-        dispatch(reduxSlice.openSlice.actions.open(false))
+        dispatch(eventSlice.openSlice.actions.open(false))
       }
     })
   }
 
   const closeModal = () => {
-    dispatch(reduxSlice.openSlice.actions.open(false))
+    dispatch(eventSlice.openSlice.actions.open(false))
     setPKeyError('')
     setRightPKey(false)
   }
@@ -98,11 +98,11 @@ const AirdropInfo = (props:any) => {
     }
     await run(data).then((res:any) => {
       if (res.data.code === 0) {
-        dispatch(reduxSlice.openSlice.actions.open(false))
+        dispatch(eventSlice.openSlice.actions.open(false))
         setPKeyError('')
         setRightPKey(false)
       } else {
-        dispatch(reduxSlice.openSlice.actions.open(true))
+        dispatch(eventSlice.openSlice.actions.open(true))
         setRightPKey(true) 
         setPKeyError(res.data.message)
       }

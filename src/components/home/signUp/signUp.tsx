@@ -18,15 +18,14 @@ import {
 import { FaUserAlt, FaLock, FaEnvelope } from "react-icons/fa";
 import axios from "axios";
 
+
 interface NumberType {
   userId: string | undefined,
   userPw: string | undefined,
   userPwCheck: string | undefined,
 }
 
-
 const SignUp = (prop:any) => {
-
   const CFaUserAlt = chakra(FaUserAlt);
   const CFaLock = chakra(FaLock);
   const CFaEnvelope = chakra(FaEnvelope);
@@ -56,12 +55,6 @@ const SignUp = (prop:any) => {
   const valueOnChange = (e:any) => {
     const { value, name } = e.target; 
     setSignUpValue({ ...signUpValue, [name]: value });
-  }
-
-  const capchaCheck = (e:any) => {
-    if(parseInt(e.target.value) === capchaNumber) {
-      setSignUpOk(false);
-    }
   }
 
   const submitSignUp = async(e:any) => {
@@ -145,25 +138,7 @@ const SignUp = (prop:any) => {
                 </InputGroup>
               </FormControl>
               {/* 비밀번호 */}
-              <Box display={'flex'} flexDirection={'column'}>
-                <canvas ref={canvas} width="400" height="100"></canvas>
-                <FormControl>
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    color="gray.300"
-                    children={<CFaLock color="gray.300" />}
-                  />
-                  <Input
-                    name="capcha"
-                    type="number"
-                    placeholder="인증번호 확인"
-                    onChange={capchaCheck}
-                    disabled={!signUpOk}
-                  />
-                </InputGroup>
-              </FormControl>
-              </Box>
+              
               <Button
                 disabled={signUpOk}
                 borderRadius={0}

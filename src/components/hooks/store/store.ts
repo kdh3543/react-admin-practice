@@ -7,6 +7,7 @@ const store = configureStore({
     openDelete: nftSlice().deleteSlice.reducer,
     openRegister: nftSlice().registerSlice.reducer,
     openPModal: eventSlice().openSlice.reducer,
+    openImportModal: eventSlice().importSlice.reducer
   }
 })
 export default store;

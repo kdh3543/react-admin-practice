@@ -23,12 +23,12 @@ const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
 const Login = () => {
-  const dispatch = useDispatch()
   const router = useRouter();
   const [loginInfo, setLoginInfo] = useState({
     userId: '',
     userPw: '',
   });
+  const [error, setError] = useState(false)
 
   const onChange = (e:any) => {
     const { value, name } = e.target;
@@ -37,21 +37,22 @@ const Login = () => {
 
   const LoginGetId = async (e: any) => {
     e.preventDefault();
-    
+    if (!loginInfo.userId || !loginInfo.userPw) {
+      setError(true)
+      return false
+    } else {
+      setError(false)
+    }
     await login(loginInfo.userId, loginInfo.userPw).then((res:any) => {
       console.log('?????')
       console.log(res)
       if (res.data.code === 0) {
+        setError(false)
         localStorage.setItem('mytoken', res.data.data.authToken)
-        
-        // setCookie('myToken', res.data.data.authToken, {
-        //   path: '/',
-        //   secure: true,
-        //   sameSite: 'none'
-        // })
         axios.defaults.headers.common['Authorization']=`Bearer ${res.data.data.authToken}`
         router.push('/Admins');
       } else {
+        setError(true)
         return false
       }
     })
@@ -103,6 +104,10 @@ const Login = () => {
                   />
                 </InputGroup>
               </FormControl>
+              {error
+                ? <Box color={'red'} fontWeight={'bold'} textAlign={'center'}>it is wrong information</Box>
+                : ''
+              }
               <Button
                 borderRadius={0}
                 type="submit"

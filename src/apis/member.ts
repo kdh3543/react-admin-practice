@@ -1,9 +1,16 @@
 import axios from "axios"
-import { getCookie } from "../utils/cookie"
 
 const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export default function member() {
+
+  const signup = (id: any, pw: any) => {
+    try {
+      return axios
+    } catch (err: any) {
+      return err
+    }
+  }
   
   const login = (loginId:any,loginPw:any) => {
     try {
@@ -125,6 +132,7 @@ export default function member() {
     }
   }
   return {
+    signup,
     login,
     getUsers,
     getAdmins,

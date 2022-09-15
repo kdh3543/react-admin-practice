@@ -11,7 +11,7 @@ import nft from "../apis/nft";
 import { useRouter } from "next/router";
 
 const {getEventList, deleteEvent, registerEvent} = eventApis()
-const reduxSlice = slice()
+const nftSlice = slice()
 const {getContractLists} = nft()
 export default function Event() {
   const router = useRouter()
@@ -50,7 +50,7 @@ export default function Event() {
   // delete func
   const onDelete = async (id:any) => {
     await deleteEvent(id).then(() => {
-      dispatch(reduxSlice.deleteSlice.actions.open(false))
+      dispatch(nftSlice.deleteSlice.actions.open(false))
       getList()
     }).catch((err) => {
       console.log(err)
@@ -59,10 +59,10 @@ export default function Event() {
 
   // register modal
   const openRegister = () => {
-    dispatch(reduxSlice.registerSlice.actions.open(true))
+    dispatch(nftSlice.registerSlice.actions.open(true))
   }
   const closeModal = () => {
-    dispatch(reduxSlice.registerSlice.actions.open(false))
+    dispatch(nftSlice.registerSlice.actions.open(false))
   }
   const choiceType = (e:any) => {
     setType(e.target.value)
@@ -120,7 +120,7 @@ export default function Event() {
       }
       await registerEvent(data).then((res:any) => {
         if (res.data.code === 0) {
-          dispatch(reduxSlice.registerSlice.actions.open(false))
+          dispatch(nftSlice.registerSlice.actions.open(false))
           getList()
           setType(null)
           setSubType(null)

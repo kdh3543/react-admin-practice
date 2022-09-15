@@ -4,12 +4,12 @@ import {
   Flex
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import nftSlice from '../hooks/store/slice/nftSlice'
+import slice from '../hooks/store/slice/nftSlice'
 import { useDispatch } from 'react-redux'
 import DeleteAirDropModal from '../modal/deleteModal'
 import { useRouter } from "next/router";
 
-const reduxSlice = nftSlice()
+const nftSlice = slice()
 export default function AirDropBody(props: any) {
   const router = useRouter()
   const dispatch = useDispatch()
@@ -18,11 +18,11 @@ export default function AirDropBody(props: any) {
   // delete modal
   const openDelete = (e: any, index: any) => {
     e.stopPropagation();
-    dispatch(reduxSlice.deleteSlice.actions.open(true))
+    dispatch(nftSlice.deleteSlice.actions.open(true))
     setDelId(index)
   }
   const closeModal = () => {
-    dispatch(reduxSlice.deleteSlice.actions.open(false))
+    dispatch(nftSlice.deleteSlice.actions.open(false))
   }
   
   const openAirdrop = (id: any) => {

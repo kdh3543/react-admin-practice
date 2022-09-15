@@ -66,7 +66,6 @@ export default function Signup() {
         mt={'40px'}
         position={'relative'}
       >
-        
         <Flex textAlign={'center'} mt={'10px'} mb={'10px'}>
           <AdminHead />
         </Flex>

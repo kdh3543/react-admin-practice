@@ -6,17 +6,23 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
+import { useDispatch } from 'react-redux';
 import style from '../../../styles/User.module.css';
 import eventApis from '../../apis/event';
 import Info from '../../components/event/Info/Info'
 import UserList from '../../components/event/Info/UserList';
+import DbImportModal from '../../components/modal/dbImportModal';
+import slice from '../../components/hooks/store/slice/eventSlice';
 
-const {getEventInfo} = eventApis()
+const eventSlice = slice()
+const {getEventInfo, importFile, airdropUserContractImport} = eventApis()
 export default function EventInfo() {
+  const dispatch = useDispatch()
   const router = useRouter()
   const [infoData, setInfoData] = useState([])
   const [infoStatus, setInfoStatus] = useState(true)
+
+  // get event info list
   const infoList = async () => {
     if (router.query.event) {
       await getEventInfo(router.query.event).then((res:any) => {
@@ -33,6 +39,7 @@ export default function EventInfo() {
     infoList();  
   }, [router.query.event])
 
+  // info, user list button click
   const openInfo = () => {
     setInfoStatus(true)
   }
@@ -43,6 +50,33 @@ export default function EventInfo() {
   // back button
   const back = () => {
     router.push('/Event')
+  }
+
+  // modal status
+  const openDbModal = () => {
+    dispatch(eventSlice.importSlice.actions.open(true))
+  }
+  const closeModal = () => {
+    dispatch(eventSlice.importSlice.actions.open(false))
+  }
+
+  // register button
+  const onRegister = async (file: any) => {
+    
+    const data = {
+      id: router.query.event,
+      file
+    }
+    await importFile(data).then((res:any) => {
+      dispatch(eventSlice.importSlice.actions.open(false))
+      console.log(res)
+    })
+  }
+
+  const importContract = async () => {
+    await airdropUserContractImport().then((res:any) => {
+      console.log(res)
+    })
   }
 
   return (
@@ -57,12 +91,33 @@ export default function EventInfo() {
         : <UserList id={infoData.id} />
       }
       <Box display={'flex'} mt={'10px'}>
-        
-        <Button colorScheme={'purple'} m={'10px'}>db import</Button>
-        <Button colorScheme={'purple'} m={'10px'}>contract import</Button>
-        <Button colorScheme={'purple'} m={'10px'} onClick={back}>Back</Button>
+        <Button
+          colorScheme={'purple'}
+          m={'10px'}
+          onClick={openDbModal}
+        >
+          db import
+        </Button>
+        <Button
+          colorScheme={'purple'}
+          m={'10px'}
+          onClick={importContract}
+        >
+          contract import
+        </Button>
+        <Button
+          colorScheme={'purple'}
+          m={'10px'}
+          onClick={back}
+        >
+          Back
+        </Button>
       </Box>
-      
+      <DbImportModal
+        closeModal={closeModal}
+        id={infoData.id}
+        onRegister={onRegister}
+      />
     </Center>
   )
 }

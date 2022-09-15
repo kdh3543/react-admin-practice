@@ -10,6 +10,15 @@ export default function eventSlice() {
       }
     }
   })
+  const importSlice = createSlice({
+    name: 'importSlice',
+    initialState: { value: false },
+    reducers: {
+      open: (state, action) => {
+        state.value = action.payload
+      }
+    }
+  })
 
-  return { openSlice }
+  return { openSlice, importSlice }
 }

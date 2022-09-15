@@ -10,7 +10,7 @@ import SelectOrder from '../components/utils/SelectOrder'
 import AirDropHead from '../components/airdrop/AirDropHead'
 
 const { getDropList, deleteAirDrop, register, getContractLists } = nft()
-const reduxSlice = slice()
+const nftSlice = slice()
 export default function AirDrop() {
   const dispatch = useDispatch()
   const [list, setList] = useState<any>([])
@@ -40,7 +40,7 @@ export default function AirDrop() {
   // delete list
   const onDelete = async (id:any) => {
     await deleteAirDrop(id).then(() => {
-      dispatch(reduxSlice.deleteSlice.actions.open(false))
+      dispatch(nftSlice.deleteSlice.actions.open(false))
       getAirDropList()
     }).catch((err:any) => {
       console.log(err)
@@ -54,10 +54,10 @@ export default function AirDrop() {
 
   // register modal
   const openRegister = () => {
-    dispatch(reduxSlice.registerSlice.actions.open(true))
+    dispatch(nftSlice.registerSlice.actions.open(true))
   }
   const closeModal = () => {
-    dispatch(reduxSlice.registerSlice.actions.open(false))
+    dispatch(nftSlice.registerSlice.actions.open(false))
   }
 
   // register
@@ -77,7 +77,7 @@ export default function AirDrop() {
       contract: contract.id
     }
     await register(data).then((res:any) => {
-      dispatch(reduxSlice.registerSlice.actions.open(false))
+      dispatch(nftSlice.registerSlice.actions.open(false))
       getAirDropList()
     })
   }

@@ -8,24 +8,30 @@ import {
   ModalContent,
   ModalOverlay,
   Text,
-  CloseButton
+  CloseButton,
+  Input
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { useSelector } from 'react-redux'
 
-import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from "react";
+export default function DbImportModal(props: any) {
+  const [file, setFile] = useState('')
 
-export default function DeleteAirDropModal(props: any) {
+  // modal status boolean
   const modalOpen = useSelector((state: any) => {
-    return state.openDelete.value
+    return state.openImportModal.value
   })
-  const delId = useSelector((id: any) => {
-    return id
-  })
- 
+  
+  // file select
+  const choiceFile = (e:any) => {
+    console.log(e.target.files[0])
+    setFile(e.target.files[0])
+  }
+  
   return (
     <>
       <Modal isOpen={modalOpen} onClose={() => { props.closeModal() }}>
-        <ModalOverlay backgroundColor={'blackAlpha.100'}/>
+        <ModalOverlay backgroundColor={'blackAlpha.400'}/>
         <ModalContent
           w={'402px'}
           h={'280px'}
@@ -47,17 +53,27 @@ export default function DeleteAirDropModal(props: any) {
                 top={'5px'}
                 right={'5px'}
               />
-              <Text fontWeight={'extrabold'} color={'primary.500'}>
-                {'DELETE LIST'}
-              </Text>
-              <Text mt={'50px'} fontSize={'20px'}>
-                {'ARE YOU SURE DELETE LIST?'}
-              </Text>
-              <Button
-                onClick={() => props.onDelete(props.delId)}
-                mt={'50px'}
+              <Text
+                fontSize={'20px'}
+                fontWeight={'extrabold'}
+                color={'primary.500'}
               >
-                DELETE
+                {'Import User'}
+              </Text>
+              <Input
+                type={'file'}
+                border={'none'}
+                mt={'50px'}
+                alignItems={'center'}
+                onChange={choiceFile}
+              />
+              <Button
+                w={'100%'}
+                colorScheme={'purple'}
+                mt={'50px'}
+                onClick={() => props.onRegister(file)}
+              >
+                Register
               </Button>
             </Flex>
           </ModalBody>

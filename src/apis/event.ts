@@ -116,6 +116,42 @@ export default function eventApis() {
       return err
     }
   }
+
+  const importFile = (data: any) => {
+    console.log(data.id[0])
+    const frm = new FormData()
+    frm.append('eventId', data.id[0])
+    frm.append('file',data.file)
+    try {
+      return axios({
+        method: 'post',
+        url: `${apiUrl}/user-event/import`,
+        data: frm,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
+        }
+      })
+    } catch (err: any) {
+      return err
+    }
+  }
+
+  const airdropUserContractImport = () => {
+    return axios({
+      method: 'post',
+      url: `${apiUrl}/contract/dsp/data/airdrop/user/import/test`,
+      data: {
+        title: 'test',
+        airdropContractName: 'AirdropGachaTicket',
+        tokenName: 'GachaTicket'
+      },
+      headers: {
+        'content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('mytoken')}`
+      }
+    })
+  }
   
   return {
     getEventList,
@@ -123,6 +159,8 @@ export default function eventApis() {
     registerEvent,
     getEventInfo,
     updateEvent,
-    getUserList
+    getUserList,
+    importFile,
+    airdropUserContractImport
   }
 }
