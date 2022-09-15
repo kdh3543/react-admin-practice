@@ -4,12 +4,12 @@ import {
   Flex
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import slice from '../hooks/store/slice/nftSlice'
+import nftSlice from '../hooks/store/slice/nftSlice'
 import { useDispatch } from 'react-redux'
 import DeleteAirDropModal from '../modal/deleteModal'
 import { useRouter } from "next/router";
 
-const reduxSlice = slice()
+const reduxSlice = nftSlice()
 export default function AirDropBody(props: any) {
   const router = useRouter()
   const dispatch = useDispatch()

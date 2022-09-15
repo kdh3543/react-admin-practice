@@ -39,10 +39,10 @@ export default function AirDrop() {
 
   // delete list
   const onDelete = async (id:any) => {
-    await deleteAirDrop(id).then((res) => {
+    await deleteAirDrop(id).then(() => {
       dispatch(reduxSlice.deleteSlice.actions.open(false))
       getAirDropList()
-    }).catch((err) => {
+    }).catch((err:any) => {
       console.log(err)
     })
   }
@@ -76,7 +76,7 @@ export default function AirDrop() {
       file,
       contract: contract.id
     }
-    await register(data).then((res) => {
+    await register(data).then((res:any) => {
       dispatch(reduxSlice.registerSlice.actions.open(false))
       getAirDropList()
     })
@@ -84,7 +84,7 @@ export default function AirDrop() {
 
   // get contract list
   const getContractList = async () => {
-    await getContractLists().then((res) => {
+    await getContractLists().then((res:any) => {
       console.log(res)
       setContractData(res.data.data)
     })

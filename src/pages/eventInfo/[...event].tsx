@@ -7,77 +7,62 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import ProfilePage from '../../components/user/Info/ProfilePage';
-import UserPage from '../../components/user/Info/UserPage';
-import ConnectPage from '../../components/user/Info/ConnectPage'
-import member from '../../apis/member';
-import { getCookie } from "../../utils/cookie";
 import style from '../../../styles/User.module.css';
+import eventApis from '../../apis/event';
+import Info from '../../components/event/Info/Info'
+import UserList from '../../components/event/Info/UserList';
 
-const { getUserInfo } = member()
-const UserInfo = () => {
-  const [inUser, setInUser] = useState(true)
-  const [inProfile, setInProfile] = useState(false)
-  const [inConnect, setInConnect] = useState(false)
-  const router = useRouter();
-  const [userDatas, setUserDatas] = useState<any>({
-    connects: [],
-    profile: {},
-    user: {}
-  });
-
-  const infos = async () => {
-    if (router.query.user) {
-      const res = await getUserInfo(router.query.user)
-      console.log(res.data.data.connects[0])
-      setUserDatas({connects: res.data.data.connects[0], profile: res.data.data.profile, user: res.data.data.user});  
+const {getEventInfo} = eventApis()
+export default function EventInfo() {
+  const router = useRouter()
+  const [infoData, setInfoData] = useState([])
+  const [infoStatus, setInfoStatus] = useState(true)
+  const infoList = async () => {
+    if (router.query.event) {
+      await getEventInfo(router.query.event).then((res:any) => {
+        if (res.data.code === 0) {
+          res.data.data.endAt = res.data.data.endAt.split('T')[0]
+          res.data.data.startAt = res.data.data.startAt.split('T')[0]
+          setInfoData(res.data.data)
+        }
+      })
     }
   }
 
   useEffect(() => {
-    if (getCookie('myToken')) {
-      infos();  
-    }
-    
-  }, [router.query.user])
+    infoList();  
+  }, [router.query.event])
 
-  const back = () => {
-    router.back();
+  const openInfo = () => {
+    setInfoStatus(true)
   }
-
   const openUser = () => {
-    setInUser(true)
-    setInConnect(false)
-    setInProfile(false)
+    setInfoStatus(false)
   }
-  const openProfile = () => {
-    setInUser(false)
-    setInConnect(false)
-    setInProfile(true)
-  }
-  const openConnect = () => {
-    setInUser(false)
-    setInConnect(true)
-    setInProfile(false)
+
+  // back button
+  const back = () => {
+    router.push('/Event')
   }
 
   return (
-
     <Center display={'flex'} flexDirection={'column'}>
+      <Box display={'flex'} w={'50%'} mt={'40px'} textAlign={'center'}>
+        <div onClick={openInfo} className={style.eventTitle}>INFO</div>
+        <div onClick={openUser} className={style.eventTitle}>USER LIST</div>
+      </Box>
       
-      <Flex w={'50%'} mt={'40px'} textAlign={'center'}>
-        <div onClick={openUser} className={style.title}>USER</div>
-        <div onClick={openProfile} className={style.title}>PROFILE</div>
-        <div onClick={openConnect} className={style.title}>CONNECT</div>
-      </Flex>
+      {infoStatus
+        ? <Info infoData={infoData} />
+        : <UserList id={infoData.id} />
+      }
+      <Box display={'flex'} mt={'10px'}>
+        
+        <Button colorScheme={'purple'} m={'10px'}>db import</Button>
+        <Button colorScheme={'purple'} m={'10px'}>contract import</Button>
+        <Button colorScheme={'purple'} m={'10px'} onClick={back}>Back</Button>
+      </Box>
       
-      {inUser ? <UserPage user={userDatas.user} /> : ''}
-      {inProfile ? <ProfilePage profile={userDatas.profile} connects={userDatas.connects} /> : ''}
-      {inConnect ? <ConnectPage connectDatas={userDatas.connects}/> : ''}
-      
-      <Button onClick={back}>뒤로</Button>
     </Center>
   )
 }
-
-export default UserInfo;

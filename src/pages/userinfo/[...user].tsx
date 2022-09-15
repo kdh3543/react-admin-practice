@@ -29,16 +29,12 @@ const UserInfo = () => {
   const infos = async () => {
     if (router.query.user) {
       const res = await getUserInfo(router.query.user)
-      console.log(res.data.data.connects[0])
       setUserDatas({connects: res.data.data.connects[0], profile: res.data.data.profile, user: res.data.data.user});  
     }
   }
 
   useEffect(() => {
-    if (getCookie('myToken')) {
-      infos();  
-    }
-    
+    infos();  
   }, [router.query.user])
 
   const back = () => {

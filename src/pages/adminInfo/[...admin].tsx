@@ -11,37 +11,38 @@ import {
   Select,
   Button,
   useColorModeValue,
+  Image
 } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
 import member from "../../apis/member";
 import { getCookie } from "../../utils/cookie";
 
+const {modifyAdminInfo, getAdminInfo} = member()
 export default function AdminInfor() {
-  const {modifyAdminInfo, getAdminInfo} = member()
   const titles = ['id','Email','createdAt','updatedAt','deletedAt','activatedAt','roles']
   const [adInfo, setAdInfo] = useState<any>({})
   const [grade, setGrade] = useState<any>('')
   const router = useRouter()
   
   const infos = async () => {
-    console.log(getCookie('myToken'))
     console.log(router.query)
     if (router.query.admin) {
-      const res = await getAdminInfo(router.query.admin)
-      if (res.data.code === 0) {
+      await getAdminInfo(router.query.admin).then((res:any) => {
+        console.log(res)
         setAdInfo(res.data.data)  
-      }
+      })
+      // const res = await getAdminInfo(router.query.admin)
+      // if (res.data.code === 0) {
+      //   setAdInfo(res.data.data)  
+      // }
     }
-    
   }
+
   useEffect(() => {
-    if (getCookie('myToken')) {
-      infos() 
-    }
-  },[router.query])
+    infos() 
+  },[router.query.admin])
   
   const modifyGrade = async () => {
-    console.log(getCookie('myToken'))
     if (grade) {
       const sendId = parseInt(router.query.admin);
       const res = await modifyAdminInfo(sendId, grade)

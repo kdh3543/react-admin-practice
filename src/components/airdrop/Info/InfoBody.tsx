@@ -23,7 +23,7 @@ export default function InfoBody(props: any) {
             <Box w={'10%'}>{data.amount}</Box>
             
             {!data.txHash
-              ? <Box w={'20%'}>null</Box>
+              ? <Box w={'20%'} />
             : 
             <NextLink href={data.txHash} passHref>
               <Link

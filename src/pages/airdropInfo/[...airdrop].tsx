@@ -7,15 +7,23 @@ import InfoBody from "../../components/airdrop/Info/InfoBody"
 import InfoHead from "../../components/airdrop/Info/InfoHead"
 import PaginationFunc from "../../components/utils/PaginationFunc";
 import fileDownload from "js-file-download"
+import PKeyModal from "../../components/modal/pKeyModal"
+import eventSlice from "../../components/hooks/store/slice/eventSlice"
+import { useDispatch } from 'react-redux'
 
-const {getAirdropInfo, exportFile, runAirDrop} = nft()
+const reduxSlice = eventSlice()
+const {getAirdropInfo, exportFile, airDropTokenIdExist, run} = nft()
 const AirdropInfo = (props:any) => {
+  const dispatch = useDispatch()
   const router = useRouter()
   const [info, setInfo] = useState<any>([])
   const [page, setPage] = useState(1)
   const [order, setOrder] = useState('ASC')
   const [dataLength, setDataLength] = useState(0)
   const [success, setSuccess] = useState(false)
+  const [modalStatus, setModalStatus] = useState(false)
+  const [pKeyError, setPKeyError] = useState('')
+  const [rightPKey, setRightPKey] = useState(false)
 
   // get airdrop list
   const getAirdrop = async () => {
@@ -46,10 +54,9 @@ const AirdropInfo = (props:any) => {
   const toAirDrop = () => {
     router.push('/AirDrop')
   }
+
   useEffect(() => {
-    if (getCookie('myToken')) {
-      getAirdrop()  
-    }
+    getAirdrop()  
   }, [router.query.airdrop])
   
   //pagination
@@ -60,21 +67,44 @@ const AirdropInfo = (props:any) => {
   // export button
   const downloadFile = async () => {
     console.log(router.query.airdrop)
-    await exportFile(router.query.airdrop).then((res) => {
-      console.log(res)
+    await exportFile(router.query.airdrop).then((res:any) => {
       fileDownload(res.data,'airdrop.csv')
     })
   }
 
   // run button
-  const onAirDrop = async () => {
-    await runAirDrop(router.query.airdrop).then((res) => {
+  const openPKeyModal = async () => {
+    await airDropTokenIdExist(router.query.airdrop).then((res:any) => {
       if(res.data.data.taskIds.length==0){
-        // openPKeyModal.value = true
-        // confirmReAirDrop.value = false
-      }else {
-        // confirmReAirDrop.value = true
-        // openPKeyModal.value = false
+        setModalStatus(true)
+        dispatch(reduxSlice.openSlice.actions.open(true))
+      } else {
+        setModalStatus(false)
+        dispatch(reduxSlice.openSlice.actions.open(false))
+      }
+    })
+  }
+
+  const closeModal = () => {
+    dispatch(reduxSlice.openSlice.actions.open(false))
+    setPKeyError('')
+    setRightPKey(false)
+  }
+
+  const onRun = async (pKey:any) => {
+    const data = {
+      privateKey: pKey,
+      id: router.query.airdrop
+    }
+    await run(data).then((res:any) => {
+      if (res.data.code === 0) {
+        dispatch(reduxSlice.openSlice.actions.open(false))
+        setPKeyError('')
+        setRightPKey(false)
+      } else {
+        dispatch(reduxSlice.openSlice.actions.open(true))
+        setRightPKey(true) 
+        setPKeyError(res.data.message)
       }
     })
   }
@@ -82,7 +112,7 @@ const AirdropInfo = (props:any) => {
     <>
       <Container maxW={'1200px'} mx={'auto'} mt={'40px'}>
         <InfoHead
-          onAirDrop={onAirDrop}
+          openPKeyModal={openPKeyModal}
           downloadFile={downloadFile}
           toAirDrop={toAirDrop}
           success={success}
@@ -93,6 +123,16 @@ const AirdropInfo = (props:any) => {
         <Flex justifyContent={'center'}>
           <PaginationFunc page={page} dataLength={dataLength} activePage={handlePageChange} />
         </Flex>
+        {modalStatus
+          ? <PKeyModal
+            closeModal={closeModal}
+            onRun={onRun}
+            rightPKey={rightPKey}
+            pKeyError={pKeyError}
+          />
+          : ''
+        }
+        
       </Container>
     </>
   )

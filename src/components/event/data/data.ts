@@ -9,7 +9,11 @@ const subTypeHero = [
   'AIRDROP_HERO_04'
 ]
 const subTypeValueChip = [
-  'AIRDROP_VALUE_CHIP'
+  'AIRDROP_VALUE_CHIP_01',
+  'AIRDROP_VALUE_CHIP_02',
+  'AIRDROP_VALUE_CHIP_03',
+  'AIRDROP_VALUE_CHIP_04',
+  'AIRDROP_VALUE_CHIP_05'
 ]
   
 export default {

@@ -6,25 +6,26 @@ export default function InfoHead(props:any) {
       <Box mb={'10px'} textAlign={'right'}>
         <Button
           colorScheme='purple'
-          borderRadius={'15px'}
-          onClick={() => props.onAirDrop()}
-          disabled={props.success===true?true:false}
+          onClick={() => props.openPKeyModal()}
+          disabled={props.success ? true : false}
+          size="sm"
         >
           Run
         </Button> 
         <Button
           colorScheme='purple'
-          borderRadius={'15px'}
           ml={'10px'}
           onClick={() => props.downloadFile()}
+          disabled={!props.success ? true : false}
+          size="sm"
         >
           Export
         </Button>
         <Button
           colorScheme='purple'
-          borderRadius={'15px'}
           ml={'10px'}
           onClick={() => props.toAirDrop()}
+          size="sm"
         >
           Back
         </Button>

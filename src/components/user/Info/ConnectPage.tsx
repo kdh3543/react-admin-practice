@@ -44,10 +44,16 @@ const ConnectPage = (props: any) => {
               </Text>
               <HStack justifyContent="center">
                 <List spacing={5} textAlign="start" px={12}>
-                  
                   {listArray.map((v: any) => {
                     return (
-                      <ListItem key={v}>
+                      <ListItem
+                        key={v}
+                        backgroundColor={
+                          v === 'account' ? 'yellow'
+                            : v === 'activatedAt' ? 'yellow'
+                              : ''
+                        }
+                      >
                         <ListIcon as={FaCircle} color="gray.400" />
                         {v}: {props.connectDatas[v] ? props.connectDatas[v] : "null"}
                       </ListItem>
@@ -58,6 +64,7 @@ const ConnectPage = (props: any) => {
               </HStack>
             </Box>
             <VStack
+              // eslint-disable-next-line react-hooks/rules-of-hooks
               bg={useColorModeValue('gray.50', 'gray.700')}
               py={4}
               borderBottomRadius={'xl'}>

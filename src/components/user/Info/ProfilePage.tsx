@@ -11,12 +11,20 @@ import {
   ListItem,
   ListIcon
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FaCircle } from 'react-icons/fa';
 
 const ProfilePage = (props: any) => {
   const listArray = ['id', 'userId', 'createdAt', 'updatedAt', 'deletedAt'];
-  
+  const [set, setSet] = useState([])
+  const get = () => {
+    setSet(props)
+  }
+
+  useEffect(() => {
+    get()
+  })
+  console.log(props.profile[3])
   return (
     <Box
       maxW={'600px'}
@@ -40,16 +48,16 @@ const ProfilePage = (props: any) => {
     <Flex justify={'center'} mt={-20}>
       <Avatar
         size={'xl'}
-        src={ props.profile.img }
+        src={ props.profile['profileImageUrl'] }
         css={{
           border: '2px solid white',
         }}
-      />
+        />
     </Flex>
       
       <Box py={5} px={12}>
         <Text fontWeight="500" fontSize="2xl">
-          User
+          {props.profile['username'] ? props.profile['username'] : 'null'}
         </Text>
         <HStack justifyContent="center">
           <List spacing={5} textAlign="start" px={12}>

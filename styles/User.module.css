@@ -3,9 +3,20 @@
   text-align: center;
   cursor: pointer;
   font-weight: bold;
-  
+  border-bottom: 1px solid rgb(128, 128, 128, 0.5);
 }
 .title:hover {
+  border-bottom: 2px solid black;
+  box-shadow: 1px black;
+}
+.eventTitle {
+  width: 50%;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  border-bottom: 1px solid rgb(128, 128, 128, 0.5);
+}
+.eventTitle:hover {
   border-bottom: 2px solid black;
   box-shadow: 1px black;
 }

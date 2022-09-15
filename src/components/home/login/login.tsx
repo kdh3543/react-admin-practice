@@ -16,13 +16,14 @@ import { useRouter } from 'next/router';
 import { getCookie, setCookie } from "../../../utils/cookie";
 import auth from "../../../apis/member";
 import member from "../../../apis/member";
+import { useDispatch } from "react-redux";
   
 const { login } = member()
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
 const Login = () => {
-
+  const dispatch = useDispatch()
   const router = useRouter();
   const [loginInfo, setLoginInfo] = useState({
     userId: '',
@@ -36,20 +37,24 @@ const Login = () => {
 
   const LoginGetId = async (e: any) => {
     e.preventDefault();
-    try {
-      const res = await login(loginInfo.userId,loginInfo.userPw)
+    
+    await login(loginInfo.userId, loginInfo.userPw).then((res:any) => {
+      console.log('?????')
+      console.log(res)
       if (res.data.code === 0) {
-        setCookie('myToken', res.data.data.authToken, {
-          path: '/',
-          secure: true,
-          sameSite: 'none'
-        })
+        localStorage.setItem('mytoken', res.data.data.authToken)
+        
+        // setCookie('myToken', res.data.data.authToken, {
+        //   path: '/',
+        //   secure: true,
+        //   sameSite: 'none'
+        // })
         axios.defaults.headers.common['Authorization']=`Bearer ${res.data.data.authToken}`
         router.push('/Admins');
+      } else {
+        return false
       }
-    } catch (err) {
-      console.log(err);
-    }
+    })
   }
 
   return (

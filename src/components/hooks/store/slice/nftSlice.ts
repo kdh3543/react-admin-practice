@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export default function slice() {
+export default function nftSlice() {
   const deleteSlice = createSlice({
     name: 'deleteSlice',
     initialState: { value: false },

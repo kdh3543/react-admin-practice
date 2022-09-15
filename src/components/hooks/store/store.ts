@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import slice from "./slice/nftSlice";
+import nftSlice from "./slice/nftSlice";
+import eventSlice from "./slice/eventSlice";
 
 const store = configureStore({
   reducer: {
-    openDelete: slice().deleteSlice.reducer,
-    openRegister: slice().registerSlice.reducer
+    openDelete: nftSlice().deleteSlice.reducer,
+    openRegister: nftSlice().registerSlice.reducer,
+    openPModal: eventSlice().openSlice.reducer,
   }
 })
 export default store;

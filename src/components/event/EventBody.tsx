@@ -1,15 +1,14 @@
 import { Box,Button } from '@chakra-ui/react'
-import { useRouter } from "next/router";
 import DeleteAirDropModal from '../modal/deleteModal'
 import { useDispatch } from 'react-redux'
-import slice from '../hooks/store/slice/nftSlice'
+import nftSlice from '../hooks/store/slice/nftSlice'
 import { useState } from 'react'
 
-const reduxSlice = slice()
+const reduxSlice = nftSlice()
 export default function EventBody(props: any) {
   // console.log(getCookie('myToken'))
   const dispatch = useDispatch()
-  const router = useRouter()
+  
   const [delId, setDelId] = useState('')
 
   // delete modal
@@ -22,15 +21,7 @@ export default function EventBody(props: any) {
     dispatch(reduxSlice.deleteSlice.actions.open(false))
   }
 
-  // open event info
-  const toEventInfo = (id: any) => {
-    router.push({
-      pathname: `/eventInfo/${id}`,
-      query: {
-        id
-      }
-    },`/eventInfo/${id}`)
-  }
+  
   
   return (
     <Box mt={3}>
@@ -46,7 +37,7 @@ export default function EventBody(props: any) {
           textAlign={'center'}
           cursor={'pointer'}
           fontSize={'13px'}
-          onClick={() => toEventInfo(data.id)}
+          onClick={() => props.toEventInfo(data.id)}
         >
           <Box w={'10%'}>{data.id}</Box>
           <Box w={'15%'}>{data.type}</Box>

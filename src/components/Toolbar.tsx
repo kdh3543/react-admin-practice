@@ -8,6 +8,7 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Image
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { Cookies } from 'next/dist/server/web/spec-extension/cookies';
@@ -34,7 +35,8 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 export default function Simple() {
 
   const logout = () => {
-    setCookie('myToken','')
+    // setCookie('myToken', '')
+    localStorage.clear()
     Router.push({
       pathname: '/'
     })
@@ -43,19 +45,19 @@ export default function Simple() {
   const [toolbarRender, setToolbarRender] = useState(true);
 
   useEffect(() => {
-    if( getCookie('myToken') ) {
+    if( localStorage.getItem('mytoken') ) {
       setToolbarRender(false);
     }else {
       setToolbarRender(true);
     }
-  },[getCookie('myToken')]);
+  });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
-        
+      <Box bg={useColorModeValue('gray.200', 'gray.900')} px={4}>
+      
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
             size={'md'}
@@ -72,8 +74,14 @@ export default function Simple() {
                   bg: 'none',
                 }}
                 href={toolbarRender ? '/' : 'Admins'}
+                display={'flex'}
               >
-                Logo
+                <Image
+                  w={'185px'}
+                  h={'40px'}
+                  src='/images/Logo/logo.png'
+                  alt={'logo image'}
+                />
               </Link>
             </Box>
             {toolbarRender ? '' : (<HStack

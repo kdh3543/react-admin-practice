@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Container, Flex } from '@chakra-ui/react'
+import { Container, Flex, Image } from '@chakra-ui/react'
 import AdminBody from '../components/admin/AdminBody';
 import AdminHead from '../components/admin/AdminHead';
 import PaginationFunc from "../components/utils/PaginationFunc";
@@ -44,7 +44,7 @@ export default function Signup() {
     }
     await toActivate(data).then(() => {
       getAdminInfor()
-    }).catch((err) => {
+    }).catch((err:any) => {
       console.log(err)
     })
   }
@@ -66,6 +66,7 @@ export default function Signup() {
         mt={'40px'}
         position={'relative'}
       >
+        
         <Flex textAlign={'center'} mt={'10px'} mb={'10px'}>
           <AdminHead />
         </Flex>

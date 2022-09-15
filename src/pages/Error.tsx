@@ -28,7 +28,7 @@ export default function Error() {
             border={'1px solid black'}
             borderRadius={'20px'}
             textAlign={'center'}
-            fontSize={'20px'}
+            fontSize={'15px'}
             mt={'5px'}
             key={data}
           >

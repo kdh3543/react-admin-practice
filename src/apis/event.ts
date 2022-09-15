@@ -4,14 +4,14 @@ import { getCookie } from "../utils/cookie"
 const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export default function eventApis() {
-  const getEventList = async (page:Number, order:String) => {
+  const getEventList =  (page:Number, order:String) => {
     try {
-      return await axios({
+      return axios({
         method: 'get',
         url: `${apiUrl}/event?order=${order}&page=${page}&take=10`,
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('myToken')}`
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
         }
       })
     } catch (err: any) {
@@ -19,14 +19,14 @@ export default function eventApis() {
     }
   }
   
-  const deleteEvent = async (id: any) => {
+  const deleteEvent =  (id: any) => {
     try {
-      return await axios({
+      return axios({
         method: 'delete',
         url: `${apiUrl}/event/${id}`,
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('myToken')}`
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
         }
       })
     } catch (err: any) {
@@ -34,9 +34,9 @@ export default function eventApis() {
     }
   }
 
-  const registerEvent = async (data: any) => {
+  const registerEvent =  (data: any) => {
     try {
-      return await axios({
+      return axios({
         method: 'post',
         url: `${apiUrl}/event`,
         data: {
@@ -52,7 +52,64 @@ export default function eventApis() {
         },
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('myToken')}`
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
+        }
+      })
+    } catch (err: any) {
+      return err
+    }
+  }
+
+  const getEventInfo = (id: any) => {
+    try {
+      return axios({
+        method: 'get',
+        url: `${apiUrl}/event/${id}`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
+        }
+      })
+    } catch (err: any) {
+      return err
+    }
+  }
+
+  const updateEvent = (data:any) => {
+    try {
+      return axios({
+        method: 'put',
+        url: `${apiUrl}/event/${data.id}`,
+        data: {
+          type: data.type,
+          subType: data.subType,
+          tokenId: parseInt(data.tokenId),
+          amount:parseInt(data.amount),
+          maxApplyCount:parseInt(data.maxApplyCount),
+          active:data.active,
+          applyCount:parseInt(data.applyCount),
+          preconditionEventId:parseInt(data.preconditionEventId),
+          startAt:data.startAt,
+          endAt:data.endAt
+        },
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
+        }
+      })
+    } catch (err: any) {
+      return err
+    }
+  }
+
+  const getUserList = (data: any) => {
+    try {
+      return axios({
+        method: 'get',
+        url: `${apiUrl}/user-event/event-id?id=${data.id}&order=${data.order}&page=${data.page}&take=10`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
         }
       })
     } catch (err: any) {
@@ -63,6 +120,9 @@ export default function eventApis() {
   return {
     getEventList,
     deleteEvent,
-    registerEvent
+    registerEvent,
+    getEventInfo,
+    updateEvent,
+    getUserList
   }
 }

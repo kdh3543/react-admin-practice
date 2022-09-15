@@ -8,11 +8,13 @@ import { useDispatch } from 'react-redux'
 import slice from '../components/hooks/store/slice/nftSlice'
 import RegisterEventModal from '../components/modal/registerEventModal'
 import nft from "../apis/nft";
+import { useRouter } from "next/router";
 
 const {getEventList, deleteEvent, registerEvent} = eventApis()
 const reduxSlice = slice()
 const {getContractLists} = nft()
 export default function Event() {
+  const router = useRouter()
   const dispatch = useDispatch()
   const [eventList, setEventList] = useState<any>([])
   const [page, setPage] = useState(1)
@@ -32,7 +34,7 @@ export default function Event() {
 
   // get event list
   const getList = async () => {
-    await getEventList(page, order).then((res) => {
+    await getEventList(page, order).then((res:any) => {
       if (res.data.code === 0) {
         setEventList(res.data.data)
         setDataLength(res.data.meta.itemCount)
@@ -69,6 +71,7 @@ export default function Event() {
     setSubType(e.target.value)
   }
   const writeToken = (e: any) => {
+    console.log(e.target.value)
     setTokenId(e.target.value)
   }
   const writeAmount = (e: any) => {
@@ -115,7 +118,7 @@ export default function Event() {
         startAt: startDate,
         endAt: endData
       }
-      await registerEvent(data).then((res) => {
+      await registerEvent(data).then((res:any) => {
         if (res.data.code === 0) {
           dispatch(reduxSlice.registerSlice.actions.open(false))
           getList()
@@ -137,9 +140,19 @@ export default function Event() {
 
   // get contract list
   const getContractList = async () => {
-    await getContractLists().then((res) => {
+    await getContractLists().then((res:any) => {
       setContractData(res.data.data)
     })
+  }
+
+  // open event info
+  const toEventInfo = (id: any) => {
+    router.push({
+      pathname: `/eventInfo/${id}`,
+      query: {
+        id
+      }
+    },`/eventInfo/${id}`)
   }
 
   useEffect(() => {
@@ -158,7 +171,11 @@ export default function Event() {
       >
         <EventHead openRegister={openRegister}/>
         <hr />
-        <EventBody eventList={eventList} onDelete={onDelete}/>
+        <EventBody
+          eventList={eventList}
+          onDelete={onDelete}
+          toEventInfo={toEventInfo}
+        />
         <Flex justifyContent={'center'}>
           <PaginationFunc page={page} dataLength={dataLength} activePage={handlePageChange} />
           {/* <SelectOrder onSelect={onSelect}/> */}

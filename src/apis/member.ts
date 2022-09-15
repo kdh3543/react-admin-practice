@@ -4,22 +4,23 @@ import { getCookie } from "../utils/cookie"
 const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export default function member() {
-  const login = async (loginId:any,loginPw:any) => {
+  
+  const login = (loginId:any,loginPw:any) => {
     try {
-      return await axios.post(`${apiUrl}/auth/login`,{ email: loginId, password: loginPw })  
+      return axios.post(`${apiUrl}/auth/login`,{ email: loginId, password: loginPw })  
     } catch (err:any) {
       return err
     }
   }
   
-  const getUsers = async (order: String, page: Number) => {
+  const getUsers = (order: String, page: Number) => {
     try {
-      return await axios({
+      return axios({
         method: 'get',
         url: `${apiUrl}/user?order=${order}&page=${page}&take=10`,
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('myToken')}`
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
         }
       })
     } catch (err:any) {
@@ -27,14 +28,14 @@ export default function member() {
     }
   }
 
-  const getUserInfo = async (userId:any) => {
+  const getUserInfo = (userId: any) => {
     try {
-      return await axios({
+      return axios({
         method: 'get',
         url: `${apiUrl}/user/${userId}`,
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('myToken')}`
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
         }
       })
     } catch (err:any) {
@@ -42,28 +43,28 @@ export default function member() {
     }
   }
 
-  const getAdmins = async (order: String, page: Number) => {
+  const getAdmins = (order: String, page: Number) => {
     try {
-      return await axios({
+      return axios({
         method: 'get',
         url: `${apiUrl}/admin/user?order=${order}&page=${page}&take=10`,
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('myToken')}`
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
         }
       })
     } catch (err:any) {
       return err
     }
   }
-  const getAdminInfo = async (adminId: any) => {
+  const getAdminInfo = (adminId: any) => {
     try {
-      return await axios({
+      return axios({
         method: 'get',
         url: `${apiUrl}/admin/user/${adminId}`,
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('myToken')}`
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
         }
       })
     } catch (err:any) {
@@ -71,9 +72,9 @@ export default function member() {
     }
     
   }
-  const modifyAdminInfo = async (userId: any, roles: any) => {
+  const modifyAdminInfo = (userId: any, roles: any) => {
     try {
-      return await axios({
+      return axios({
         method: 'put',
         url: `${apiUrl}/admin/user/role`,
         data: {
@@ -82,7 +83,7 @@ export default function member() {
         },
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('myToken')}`
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
         }
       })
     } catch (err:any) {
@@ -90,9 +91,9 @@ export default function member() {
     }
   }
   
-  const toActivate = async (data:any) => {
+  const toActivate = (data:any) => {
     try {
-      return await axios({
+      return axios({
         method: 'put',
         url: `${apiUrl}/admin/user/activate`,
         data: {
@@ -101,7 +102,7 @@ export default function member() {
         },
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('myToken')}`
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
         }
       })
     } catch (err: any) {
@@ -109,14 +110,14 @@ export default function member() {
     }
   }
 
-  const searchByAddress = async (data: any) => {
+  const searchByAddress = (data: any) => {
     try {
-      return await axios({
+      return axios({
         method: 'get',
         url: `${apiUrl}/user/address/${data}`,
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('myToken')}`
+          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
         }
       })
     } catch (err: any) {
