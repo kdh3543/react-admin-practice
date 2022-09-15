@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock, FaEnvelope } from "react-icons/fa";
 import axios from "axios";
-
+import member from '../../../apis/member'
 
 interface NumberType {
   userId: string | undefined,
@@ -25,20 +25,21 @@ interface NumberType {
   userPwCheck: string | undefined,
 }
 
-const SignUp = (prop:any) => {
+const {signup} = member()
+export default function SignUp(prop:any) {
   const CFaUserAlt = chakra(FaUserAlt);
   const CFaLock = chakra(FaLock);
   const CFaEnvelope = chakra(FaEnvelope);
   const canvas = useRef<any>(null);
 
-
+  const [error, setError] = useState('')
+  const [errorStatus, setErrorStatus] = useState(false)
   const [capchaNumber, setCapchaNumber] = useState<undefined | number>(undefined);
   const [signUpValue, setSignUpValue] = useState<NumberType>({
     userId: '',
     userPw: '',
     userPwCheck: ''
   });
-  const [signUpOk, setSignUpOk] = useState(true); 
 
   useEffect(() => {
 
@@ -59,14 +60,31 @@ const SignUp = (prop:any) => {
 
   const submitSignUp = async(e:any) => {
     e.preventDefault();
-    prop.signUp(true);
-
-    try {
-    const response = await axios.post('https://dev-admin.luxon.run/auth/signup', {email:signUpValue.userId , password: signUpValue.userPw});
-    console.log(response);
-    }catch(err) {
-      console.log(err);
+    
+    if (!signUpValue.userId || !signUpValue.userPw || !signUpValue.userPwCheck) {
+      setErrorStatus(true)
+      setError('must input all information')
+      return false
+    } else {
+      await signup(signUpValue.userId, signUpValue.userPw).then((res:any) => {
+        console.log(res)
+        if (res.data.code === 1002) {
+          setErrorStatus(true)
+          setError('ADMIN_USER_CONFLICT_EMAIL')
+        } else {
+          setErrorStatus(false)
+          setError('')
+          prop.signUp(true);
+        }
+      })
     }
+    
+    // try {
+    // const response = await axios.post('https://dev-admin.luxon.run/auth/signup', {email:signUpValue.userId , password: signUpValue.userPw});
+    // console.log(response);
+    // }catch(err) {
+    //   console.log(err);
+    // }
   }
 
   return (
@@ -138,9 +156,20 @@ const SignUp = (prop:any) => {
                 </InputGroup>
               </FormControl>
               {/* 비밀번호 */}
+              {errorStatus
+                ?
+                <Box
+                  textAlign={'center'}
+                  color={'red'}
+                  fontSize={'15px'}
+                  fontWeight={'bold'}
+                >
+                  {error}
+                </Box>
+                : ''
+              }
               
               <Button
-                disabled={signUpOk}
                 borderRadius={0}
                 type="submit"
                 variant="solid"
@@ -158,4 +187,4 @@ const SignUp = (prop:any) => {
   );
 };
 
-export default SignUp;
+

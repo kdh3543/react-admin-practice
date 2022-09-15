@@ -21,21 +21,26 @@ import data from '../data/data';
 import { useRouter } from "next/router";
 import eventApis from '../../../apis/event';
 
-const {updateEvent} = eventApis()
+
 export default function Info(props: any) {
   const router = useRouter()
-  const [type, setType] = useState(null)
+  const [type, setType] = useState('')
   const [startAt, setStartAt] = useState(null)
 
   // update info
   const selectType = (e: any) => {
+    setType(e.target.value)
     props.infoData.type = e.target.value
   }
   const selectSubType = (e: any) => {
     props.infoData.subType = e.target.value
   }
   const selectActive = (e: any) => {
-    props.infoData.active = e.target.value
+    if (e.target.value === 'true') {
+      props.infoData.active = true
+    } else {
+      props.infoData.active = false
+    }
   }
   const choiceStart = (e: any) => {
     props.infoData.startAt = e.target.value
@@ -60,11 +65,11 @@ export default function Info(props: any) {
     props.infoData.tokenId = e.target.preconditionEventId
   }
 
-  const updateInfo = async () => {
-    await updateEvent(props.infoData).then((res:any) => {
-      console.log(res)
-    })
-  }
+  // const updateInfo = async () => {
+  //   await updateEvent(props.infoData).then((res:any) => {
+  //     console.log(res)
+  //   })
+  // }
 
   const PriceWrapper = ({ children }: { children: ReactNode }) => {
     return (
@@ -243,7 +248,7 @@ export default function Info(props: any) {
               </UnorderedList>
           </Box>
           <Box justifyContent={'center'} display={'flex'} mb={2}>
-            <Button onClick={updateInfo}>Update</Button>
+            <Button onClick={() => props.updateInfo(props.infoData)}>Update</Button>
           </Box>
           <VStack
             bg={useColorModeValue('gray.50', 'gray.700')}

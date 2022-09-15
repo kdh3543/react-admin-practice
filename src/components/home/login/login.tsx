@@ -44,7 +44,6 @@ const Login = () => {
       setError(false)
     }
     await login(loginInfo.userId, loginInfo.userPw).then((res:any) => {
-      console.log('?????')
       console.log(res)
       if (res.data.code === 0) {
         setError(false)
@@ -105,7 +104,7 @@ const Login = () => {
                 </InputGroup>
               </FormControl>
               {error
-                ? <Box color={'red'} fontWeight={'bold'} textAlign={'center'}>it is wrong information</Box>
+                ? <Box color={'red'} fontWeight={'bold'} textAlign={'center'}>IT IS WRONG INFORMATION</Box>
                 : ''
               }
               <Button

@@ -13,9 +13,13 @@ import Info from '../../components/event/Info/Info'
 import UserList from '../../components/event/Info/UserList';
 import DbImportModal from '../../components/modal/dbImportModal';
 import slice from '../../components/hooks/store/slice/eventSlice';
-
 const eventSlice = slice()
-const {getEventInfo, importFile, airdropUserContractImport} = eventApis()
+const {
+  getEventInfo,
+  importFile,
+  airdropUserContractImport,
+  updateEvent
+} = eventApis()
 export default function EventInfo() {
   const dispatch = useDispatch()
   const router = useRouter()
@@ -73,9 +77,21 @@ export default function EventInfo() {
     })
   }
 
+  // contract import button
   const importContract = async () => {
     await airdropUserContractImport().then((res:any) => {
       console.log(res)
+    })
+  }
+
+  // update event info
+  const updateInfo = async (data:any) => {
+    console.log(data)
+    await updateEvent(data).then((res:any) => {
+      console.log(res)
+      if (res.data.code === 0) {
+        infoList()
+      }
     })
   }
 
@@ -87,8 +103,8 @@ export default function EventInfo() {
       </Box>
       
       {infoStatus
-        ? <Info infoData={infoData} />
-        : <UserList id={infoData.id} />
+        ? <Info infoData={infoData} updateInfo={updateInfo}/>
+        : <UserList id={infoData.id}  />
       }
       <Box display={'flex'} mt={'10px'}>
         <Button

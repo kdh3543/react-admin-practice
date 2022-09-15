@@ -1,6 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
 import {
-  Button,
   Box,
   Flex,
   HStack,
@@ -12,9 +11,6 @@ import {
   Image
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import { Cookies } from 'next/dist/server/web/spec-extension/cookies';
-import { getCookie, setCookie } from '../utils/cookie';
-import axios from 'axios';
 import Router from 'next/router';
 
 const Links = ['Admins', 'Users', 'AirDrop', 'Event', 'Error'];
@@ -27,27 +23,22 @@ const NavLink = ({ children }: { children: ReactNode }) => (
     _hover={{
       textDecoration: 'none',
       bg: 'none',
+      backgroundColor:'gray'
     }}
+    textAlign={'center'}
+    fontWeight={'bold'}
     href={`/${children}`}>
     {children}
   </Link>
 );
 
 export default function Simple() {
-
   const logout = () => {
-    // setCookie('myToken', '')
     localStorage.clear()
     Router.push({
       pathname: '/'
     })
   };
-
-  const toLogin = () => {
-    Router.push({
-      pathname: '/'
-    })
-  }
 
   const [toolbarRender, setToolbarRender] = useState(true);
 
@@ -63,8 +54,8 @@ export default function Simple() {
 
   return (
     <>
-      <Box bg={useColorModeValue('gray.200', 'gray.900')} px={4}>
       
+      <Box bg={useColorModeValue('gray.200', 'gray.900')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
             size={'md'}
@@ -96,47 +87,49 @@ export default function Simple() {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
               {Links.map((link) => (
-                <Button
-                  _hover={{ backgroundColor: 'gray' }}
-                  background={'none'}
-                  borderRadius={'15px'}
-                  onClick={() => Router.push(`${link}`)}
+                <NavLink
                   key={link}
                 >
                   {link}
-                </Button>
+                </NavLink>
               ))}
             </HStack>)}
-            
           </HStack>
           <HStack spacing={8} alignItems={'center'}>
-            
             <HStack
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
               {toolbarRender ?
-                
-                <Button
-                  px={4}
-                  py={1}
-                  borderRadius={'15px'}
-                  _hover={{ backgroundColor: 'gray' }}
-                  background={'none'}
-                  onClick={toLogin}
+                <Link
+                  px={2}
+                  py={2}
+                  rounded={'md'}
+                  _hover={{
+                    textDecoration: 'none',
+                    bg: 'none',
+                    backgroundColor:'gray'
+                  }}
+                  fontWeight={'bold'}
+                  href='/'
                 >
                   Login
-                </Button> :
-                <Button
-                  px={4}
-                  py={1}
-                  _hover={{ backgroundColor: 'gray' }}
-                  background={'none'}
-                  borderRadius={'15px'}
+                </Link> :
+                <Link
+                  px={2}
+                  py={2}
+                  rounded={'md'}
+                  _hover={{
+                    textDecoration: 'none',
+                    bg: 'none',
+                    backgroundColor:'gray'
+                  }}
+                  fontWeight={'bold'}
                   onClick={logout}
+                  href='/'
                 >
-                  Logout
-                </Button>
+                  LOGOUT
+                </Link>
               }
             </HStack>
           </HStack>
@@ -146,14 +139,7 @@ export default function Simple() {
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
               {Links.map((link) => (
-                <Button
-                  _hover={{ backgroundColor: 'gray' }}
-                  background={'none'}
-                  onClick={() => Router.push(`${link}`)}
-                  key={link}
-                >
-                  {link}
-                </Button>
+                <NavLink key={link}>{link}</NavLink>
               ))}
             </Stack>
           </Box>

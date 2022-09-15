@@ -4,9 +4,16 @@ const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export default function member() {
 
-  const signup = (id: any, pw: any) => {
+  const signup = (email: any, password: any) => {
     try {
-      return axios
+      return axios({
+        method: 'post',
+        url: `${apiUrl}/auth/signup`,
+        data: {
+          email,
+          password
+        }
+      })
     } catch (err: any) {
       return err
     }
