@@ -6,12 +6,10 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
 import ProfilePage from '../../components/user/Info/ProfilePage';
 import UserPage from '../../components/user/Info/UserPage';
 import ConnectPage from '../../components/user/Info/ConnectPage'
 import member from '../../apis/member';
-import { getCookie } from "../../utils/cookie";
 import style from '../../../styles/User.module.css';
 
 const { getUserInfo } = member()

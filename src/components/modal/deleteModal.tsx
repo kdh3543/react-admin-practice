@@ -10,9 +10,7 @@ import {
   Text,
   CloseButton
 } from "@chakra-ui/react";
-
-import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from "react";
+import { useSelector } from 'react-redux'
 
 export default function DeleteAirDropModal(props: any) {
   const modalOpen = useSelector((state: any) => {

@@ -13,16 +13,16 @@ import {
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { getCookie, setCookie } from "../../../utils/cookie";
-import auth from "../../../apis/member";
 import member from "../../../apis/member";
 import { useDispatch } from "react-redux";
+import slice from "../../hooks/store/slice/memberSlice";
   
 const { login } = member()
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
-
-const Login = () => {
+const memberSlice = slice()
+export default function Login() {
+  const dispatch = useDispatch()
   const router = useRouter();
   const [loginInfo, setLoginInfo] = useState({
     userId: '',
@@ -46,10 +46,27 @@ const Login = () => {
     await login(loginInfo.userId, loginInfo.userPw).then((res:any) => {
       console.log(res)
       if (res.data.code === 0) {
-        setError(false)
+        // const data = {
+        //   value: res.data.data.authToken,
+        //   expire: Date.now() + 100
+        // }
+        // if (Date.now() > data.expire) {
+        //   localStorage.clear()
+        //   console.log('end!!!')
+        //   return false
+        // }
+        // localStorage.setItem('mytoken', JSON.stringify(data))
+        dispatch(memberSlice.loginSlice.actions.login(res.data.data.email))
         localStorage.setItem('mytoken', res.data.data.authToken)
+        setError(false)
         axios.defaults.headers.common['Authorization']=`Bearer ${res.data.data.authToken}`
         router.push('/Admins');
+
+        // 자동 로그아웃
+        setTimeout(() => {
+          localStorage.clear()
+          router.push('/')
+        },60*60*3600)
       } else {
         setError(true)
         return false
@@ -125,6 +142,5 @@ const Login = () => {
   );
 };
 
-export default Login;
 
 

@@ -8,10 +8,12 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
-  Image
+  Image,
+  Text
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import Router from 'next/router';
+import { useSelector } from 'react-redux';
 
 const Links = ['Admins', 'Users', 'AirDrop', 'Event', 'Error'];
 
@@ -33,6 +35,9 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 );
 
 export default function Simple() {
+  // const email = useSelector((state: any) => {
+  //   return state.setEmail.value
+  // })
   const logout = () => {
     localStorage.clear()
     Router.push({
@@ -49,12 +54,9 @@ export default function Simple() {
       setToolbarRender(true);
     }
   });
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <>
-      
       <Box bg={useColorModeValue('gray.200', 'gray.900')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
@@ -115,6 +117,53 @@ export default function Simple() {
                 >
                   Login
                 </Link> :
+                <Box display={'flex'} alignItems={'center'}>
+                  {/* <Text
+                    mr={'5px'}
+                    fontWeight={'normal'}
+                    fontSize={'12px'}
+                    opacity={'0.5'}
+                  >
+                    {email}
+                  </Text> */}
+                  <Link
+                    px={2}
+                    py={2}
+                    rounded={'md'}
+                    _hover={{
+                      textDecoration: 'none',
+                      bg: 'none',
+                      backgroundColor:'gray'
+                    }}
+                    fontWeight={'bold'}
+                    onClick={logout}
+                    href='/'
+                    display={'flex'}
+                    alignItems={'center'}
+                  >
+                    
+                    LOGOUT
+                  </Link>
+                </Box>
+                
+              }
+            </HStack>
+          </HStack>
+        </Flex>
+        
+        {isOpen && !toolbarRender ?
+          (
+            <Box pb={4} display={{ md: 'none' }}>
+              <Box pb={4} textAlign={'center'} display={'flex'} alignItems={'center'}>
+                {/* <Text
+                  w={'50%'}
+                  mr={'5px'}
+                  fontWeight={'normal'}
+                  fontSize={'15px'}
+                  opacity={'0.5'}
+                >
+                  {email}
+                </Text> */}
                 <Link
                   px={2}
                   py={2}
@@ -127,23 +176,23 @@ export default function Simple() {
                   fontWeight={'bold'}
                   onClick={logout}
                   href='/'
+                  display={'flex'}
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                  w={'100%'}
                 >
                   LOGOUT
                 </Link>
-              }
-            </HStack>
-          </HStack>
-        </Flex>
-        
-        {isOpen ? (
-          <Box pb={4} display={{ md: 'none' }}>
-            <Stack as={'nav'} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </Stack>
-          </Box>
-        ) : null}
+              </Box>
+              <Stack as={'nav'} spacing={4}>
+                {Links.map((link) => (
+                  <NavLink key={link}>{link}</NavLink>
+                ))}
+              </Stack>
+            </Box>
+          )
+          :
+          null}
       </Box>
     </>
   );

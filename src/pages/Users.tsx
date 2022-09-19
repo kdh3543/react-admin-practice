@@ -7,12 +7,12 @@ import UserBody from "../components/user/UserBody";
 import UserHead from "../components/user/UserHead";
 import SelectOrder from "../components/utils/SelectOrder";
 import Search from "../components/utils/Search";
+import { useSelector } from "react-redux";
 
 const {getUsers, searchByAddress} = member()
 
 export default function Test() {
-  const titles = ['id', 'address', 'createdAt', 'deletedAt', 'droppedAt', 'updatedAt'];
-
+  // const titles = ['id', 'address', 'createdAt', 'deletedAt', 'droppedAt', 'updatedAt'];
   const router = useRouter();
   const [userData, setUserData] = useState<any>([]);
   const [page, setPage] = useState<number>(1);
@@ -27,7 +27,7 @@ export default function Test() {
 
   // get user list
   const getUserData = async () => {
-    await getUsers(order, page).then((res) => {
+    await getUsers(order, page).then((res:any) => {
       console.log(res)
       setDataLength(res.data.meta.itemCount);
       setUserData(res.data.data);  

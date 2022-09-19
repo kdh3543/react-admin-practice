@@ -13,7 +13,6 @@ import { ReactNode, useEffect } from 'react';
 import { FaCircle } from 'react-icons/fa';
 
 const UserPage = (props:any) => {
-
   const PriceWrapper = ({ children }: { children: ReactNode }) => {
     return (
       <Box
@@ -27,7 +26,7 @@ const UserPage = (props:any) => {
       </Box>
     );
   }
-  const listArray = ['id', 'address', 'createdAt', 'updatedAt', 'deletedAt', 'droppedAt'];
+  const listArray = ['id', 'address', 'createdAt', 'updatedAt', 'deletedAt', 'droppedAt', 'refreshToken'];
   
   return (
     <Box>

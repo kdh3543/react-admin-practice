@@ -3,13 +3,13 @@ import { ChakraProvider, Box, useColorModeValue } from '@chakra-ui/react'
 import Toolbar from '../components/Toolbar'
 import { Provider } from 'react-redux'
 import store from '../components/hooks/store/store'
-import HeadSelect from '../components/HeadSelect'
+import MenuDropDown from '../components/MenuDropDown'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
       <Provider store={store}>
-        <HeadSelect />
+        <MenuDropDown />
         <Toolbar />
         <Component {...pageProps} />
       </Provider>
