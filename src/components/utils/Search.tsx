@@ -1,4 +1,4 @@
-import { Input, Flex, Button } from '@chakra-ui/react'
+import { Input, Flex, Button, Box } from '@chakra-ui/react'
 import { useState } from 'react'
 export default function Search(props:any) {
   const [search, setSearch] = useState('')
@@ -8,7 +8,7 @@ export default function Search(props:any) {
   }
   return (
     <>
-      <Flex alignItems={'center'} justifyContent={'right'} w={'50%'}>
+      <Flex position={'relative'} alignItems={'center'} justifyContent={'right'} w={'50%'}>
         <Input onChange={searchAddr} placeholder={'search address'} />
         <Button onClick={() => props.onSearch(search)}>Search</Button>
       </Flex>

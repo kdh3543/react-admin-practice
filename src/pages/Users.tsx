@@ -61,9 +61,8 @@ export default function Test() {
 
   // search func
   const onSearch = async (data: any) => {
-
     if (data) {
-      await searchByAddress(data).then((res) => {
+      await searchByAddress(data).then((res:any) => {
         console.log(res)
         if (res.data.code === 101) {
           setSearchResult(false)
@@ -78,9 +77,15 @@ export default function Test() {
       setSearchResult(true)
       await getUserData()
     }
-    
-    
   }
+
+  // show user graph
+  const showUserGraph = () => {
+    router.push({
+      pathname: '/UserGraph'
+    },'/UserGraph')
+  }
+
   console.log(userData)
   return (
     <Container
@@ -93,7 +98,17 @@ export default function Test() {
         <Box>
           total User: {totalUsers}
         </Box>
-        <Search onSearch={onSearch} />
+        <Flex>
+          <Search onSearch={onSearch} />
+          <Button
+            colorScheme={'blue'}
+            ml={'auto'}
+            onClick={showUserGraph}
+          >
+            User Graph
+          </Button>
+        </Flex>
+        
         <Flex textAlign={'center'} mt={'20px'} mb={'10px'}>
           <UserHead />
         </Flex>

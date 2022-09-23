@@ -9,7 +9,8 @@ import {
   useColorModeValue,
   Stack,
   Image,
-  Text
+  Text,
+  Button
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import Router from 'next/router';
@@ -97,6 +98,7 @@ export default function Simple() {
               ))}
             </HStack>)}
           </HStack>
+          
           <HStack spacing={8} alignItems={'center'}>
             <HStack
               as={'nav'}
