@@ -1,27 +1,31 @@
 import axios from "axios"
+import { Cookies } from "react-cookie"
+import axiosApiMethod from "./axiosApiMethod"
 
+const cookies = new Cookies()
+const {defaultInstance,authInstance} = axiosApiMethod()
 const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
-
 export default function member() {
-
   const signup = (email: any, password: any) => {
     try {
-      return axios({
-        method: 'post',
-        url: `${apiUrl}/auth/signup`,
-        data: {
-          email,
-          password
-        }
-      })
+      const data = {
+        email,
+        password
+      }
+      return defaultInstance.post('/auth/signup',data)
     } catch (err: any) {
       return err
     }
   }
   
-  const login = (loginId:any,loginPw:any) => {
+  const login = async (loginId:any,loginPw:any) => {
     try {
-      return axios.post(`${apiUrl}/auth/login`,{ email: loginId, password: loginPw })  
+      const data = {
+        email: loginId,
+        password: loginPw
+      }
+      console.log(data)
+      return await defaultInstance.post('/auth/login',data)
     } catch (err:any) {
       return err
     }
@@ -29,14 +33,7 @@ export default function member() {
   
   const getUsers = (order: String, page: Number) => {
     try {
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/user?order=${order}&page=${page}&take=10`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance.get(`/user?order=${order}&page=${page}&take=10`)
     } catch (err:any) {
       return err
     }
@@ -44,27 +41,23 @@ export default function member() {
 
   const getUserInfo = (userId: any) => {
     try {
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/user/${userId}`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance.get(`/user/${userId}`)
     } catch (err:any) {
       return err
     }
   }
 
-  const getAdmins = (order: String, page: Number) => {
+  const getAdmins = async (order: String, page: Number) => {
+    console.log('들어온 값은??')
+    console.log(cookies.get('mytoken'))
     try {
+      // return await authInstance.get(`/admin/user?order=${order}&page=${page}&take=10`)
       return axios({
         method: 'get',
         url: `${apiUrl}/admin/user?order=${order}&page=${page}&take=10`,
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
+          Authorization: `Bearer ${cookies.get('mytoken')}`
         }
       })
     } catch (err:any) {
@@ -73,12 +66,13 @@ export default function member() {
   }
   const getAdminInfo = (adminId: any) => {
     try {
+      // return authInstance.get(`/admin/user/${adminId}`)
       return axios({
         method: 'get',
         url: `${apiUrl}/admin/user/${adminId}`,
         headers: {
           'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
+          Authorization: `Bearer ${cookies.get('mytoken')}`
         }
       })
     } catch (err:any) {
@@ -88,18 +82,11 @@ export default function member() {
   }
   const modifyAdminInfo = (userId: any, roles: any) => {
     try {
-      return axios({
-        method: 'put',
-        url: `${apiUrl}/admin/user/role`,
-        data: {
-          adminUserId: userId,
-          roles: roles
-        },
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      const data = {
+        adminUserId: userId,
+        roles: roles
+      }
+      return authInstance.put('/admin/user/role',data)
     } catch (err:any) {
       return err
     }
@@ -107,18 +94,11 @@ export default function member() {
   
   const toActivate = (data:any) => {
     try {
-      return axios({
-        method: 'put',
-        url: `${apiUrl}/admin/user/activate`,
-        data: {
-          adminUserId: data.adminUserId,
-          activate: data.activate,
-        },
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      const activateData = {
+        adminUserId: data.adminUserId,
+        activate: data.activate,
+      }
+      return authInstance.put('/admin/user/activate',activateData)
     } catch (err: any) {
       return err
     }
@@ -126,14 +106,15 @@ export default function member() {
 
   const searchByAddress = (data: any) => {
     try {
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/user/address/${data}`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance.get(`/user/address/${data}`)
+    } catch (err: any) {
+      return err
+    }
+  }
+
+  const getCreateWalletUsers = () => {
+    try {
+      return authInstance.get('/user/analysis/daily-created')
     } catch (err: any) {
       return err
     }
@@ -147,6 +128,7 @@ export default function member() {
     getAdminInfo,
     modifyAdminInfo,
     toActivate,
-    searchByAddress
+    searchByAddress,
+    getCreateWalletUsers
   }
 }

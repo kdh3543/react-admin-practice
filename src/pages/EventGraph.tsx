@@ -1,7 +1,7 @@
 import { Container, Button, Box } from "@chakra-ui/react"
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import member from "../apis/member";
+import eventApis from "../apis/event";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -23,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-const {getCreateWalletUsers} = member()
+const {getEventUsers} = eventApis()
 export default function UserGraph() {
   const [graphData, setGraphData] = useState([])
 
@@ -40,7 +40,7 @@ export default function UserGraph() {
     plugins: {
       title: {
         display: true,
-        text: '일별 신규 지갑 연동 유저 수',
+        text: '아이디, 조건 별 이벤트 참여자 수',
       },
     },
     scales: {
@@ -57,12 +57,19 @@ export default function UserGraph() {
           drawOnChartArea: false,
         },
       },
+      x: {
+        ticks: {
+          callback: function (index:any) {
+            return `${graphData[index].condition}/${graphData[index].eventId}`;
+          }
+        }
+      }
     },
   };
   
   // graph data
   const data = {
-    labels: graphData.map((list:any)=>list.date),
+    labels: graphData.map((list:any)=>list.eventId),
     datasets: [
       {
         label: 'count',
@@ -74,30 +81,28 @@ export default function UserGraph() {
     ]
   }
 
-  // get daily user
-  const getDailyCreateUsers = async () => {
-    await getCreateWalletUsers().then((res:any) => {
+  const getUsersByEventCondition = async () => {
+    await getEventUsers().then((res: any) => {
       console.log(res)
       setGraphData(res.data.data)
     })
   }
 
-  const backToUsers = () => {
+  const backToEvents = () => {
     router.push({
-      pathname: '/Users'
+      pathname: '/Event'
     })
   }
   useEffect(() => {
-    getDailyCreateUsers()
+    getUsersByEventCondition()
   }, [])
   
   return (
     <>
       <Container mb={'50px'} maxW={'1400px'} mt={'50px'}>
-        User Graph
         <Line options={options} data={data} />
         <Box textAlign={'center'} mt={'20px'} mb={'20px'} >
-          <Button onClick={backToUsers}>Back</Button>
+          <Button onClick={backToEvents}>Back</Button>
         </Box>
       </Container>
     </>

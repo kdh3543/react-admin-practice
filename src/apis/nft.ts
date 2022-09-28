@@ -1,20 +1,12 @@
-import axios from "axios";
-import { getCookie } from "../utils/cookie";
+import axiosApiMethod from "./axiosApiMethod";
 
 // const apiUrlAdmin = `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin`
-const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
-
+// const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+const {authInstance,authFileInstance} = axiosApiMethod()
 export default function nft() {
   const getDropList = (order: String, page: Number) => {
     try {
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/airdrop-centralization-task?order=${order}&page=${page}&take=10`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance.get(`/airdrop-centralization-task?order=${order}&page=${page}&take=10`)
     } catch (err: any) {
       return err
     }
@@ -22,43 +14,21 @@ export default function nft() {
   const deleteAirDrop = (id: number) => {
     console.log(id)
     try {
-      return axios({
-        method: 'delete',
-        url: `${apiUrl}/airdrop-centralization-task/${id}`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
-      
+      return authInstance.delete(`/airdrop-centralization-task/${id}`)
     } catch (err: any) {
       return err
     } 
   }
   const getAirdropInfo = (data: any) => {
     try {
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/airdrop-user?taskId=${data.id}&order=${data.order}&page=${data.page}&take=10`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance.get(`/airdrop-user?taskId=${data.id}&order=${data.order}&page=${data.page}&take=10`)
     } catch (err: any) {
       return err
     }
   }
   const getContractLists = () => {
     try {
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/contract/simple`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance.get('contract/simple')
     } catch (err: any) {
       return err
     }
@@ -69,15 +39,7 @@ export default function nft() {
     frm.append('contractId', data.contract)
     frm.append('file',data.file)
     try {
-      return axios({
-        method: 'post',
-        url: `${apiUrl}/airdrop-centralization-task/register`,
-        data: frm,
-        headers: {
-          'content-Type': `multipart/form-data`,
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authFileInstance.post('/airdrop-centralization-task/register',frm)
     } catch (err: any) {
       return err
     }
@@ -85,14 +47,7 @@ export default function nft() {
 
   const exportFile = (id: any) => {
     try {
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/airdrop-centralization-task/export/${id}`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance(`/airdrop-centralization-task/export/${id}`)
     } catch (err: any) {
       return err
     }
@@ -100,14 +55,7 @@ export default function nft() {
 
   const airDropTokenIdExist = (id: any) => {
     try {
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/airdrop-centralization-task/${id}/duplicated`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance.get(`/airdrop-centralization-task/${id}/duplicated`)
     } catch (err: any) {
       return err
     }
@@ -115,18 +63,11 @@ export default function nft() {
 
   const run = (data: any) => {
     try {
-      return axios({
-        method: 'post',
-        url: `${apiUrl}/airdrop-centralization-task/run`,
-        data: {
-          id: +data.id[0],
-          privateKey: data.privateKey
-        },
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-     }) 
+      const runData = {
+        id: +data.id[0],
+        privateKey: data.privateKey
+      }
+      return authInstance.post('/airdrop-centralization-task/run',runData)
     } catch (err: any) {
       return err
     }

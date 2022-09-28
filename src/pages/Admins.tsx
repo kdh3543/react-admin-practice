@@ -13,19 +13,17 @@ export default function Signup() {
   const [page, setPage] = useState(1)
   const [dataLength, setDataLength] = useState(0)
   const [order, setOrder] = useState('DESC')
-
+  
   // get admin list
   const getAdminInfor = async () => {
     try {
       const res = await getAdmins(order, page)
-      console.log(res)
       setDataLength(res.data.meta.itemCount)
       setAdmin(res.data.data)
     } catch (e) {
       console.log(e)
     }
   }
-  
   useEffect(() => {
     getAdminInfor()
   }, [page,order])
@@ -48,10 +46,8 @@ export default function Signup() {
       console.log(err)
     })
   }
-
   // select order(정렬)
   const onSelect = async (e: any) => {
-    console.log(e.target.value)
     setOrder(e.target.value)
     const res = await getAdmins(order, page)
     setAdmin(res.data.data)

@@ -2,8 +2,17 @@ import { Box, Flex, Button } from '@chakra-ui/react'
 export default function EventHead(props:any) {
   return (
     <>
-      <Box textAlign={'right'}>
+      <Box justifyContent={'flex-end'} display={'flex'}>
         <Button
+          size={'sm'}
+          borderRadius={'10px'}
+          colorScheme='blue'
+          onClick={() => props.openEventGraph()}
+        >
+          Event Graph
+        </Button>        
+        <Button
+          ml={'5px'}
           size={'sm'}
           borderRadius={'10px'}
           colorScheme='purple'

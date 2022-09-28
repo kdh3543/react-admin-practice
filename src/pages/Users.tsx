@@ -11,8 +11,7 @@ import { useSelector } from "react-redux";
 
 const {getUsers, searchByAddress} = member()
 
-export default function Test() {
-  // const titles = ['id', 'address', 'createdAt', 'deletedAt', 'droppedAt', 'updatedAt'];
+export default function Users() {
   const router = useRouter();
   const [userData, setUserData] = useState<any>([]);
   const [page, setPage] = useState<number>(1);
@@ -33,7 +32,6 @@ export default function Test() {
       setUserData(res.data.data);  
       setTotalUsers(res.data.meta.itemCount)
     })
-    
   }
 
   // pagination

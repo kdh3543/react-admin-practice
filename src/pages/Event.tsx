@@ -52,7 +52,7 @@ export default function Event() {
     await deleteEvent(id).then(() => {
       dispatch(nftSlice.deleteSlice.actions.open(false))
       getList()
-    }).catch((err) => {
+    }).catch((err:any) => {
       console.log(err)
     })
   }
@@ -155,6 +155,12 @@ export default function Event() {
     },`/eventInfo/${id}`)
   }
 
+  const openEventGraph = () => {
+    router.push({
+      pathname: '/EventGraph'
+    },'/EventGraph')
+  }
+
   useEffect(() => {
     getList()
   }, [page, order])
@@ -169,7 +175,7 @@ export default function Event() {
         mt={'40px'}
         position={'relative'}
       >
-        <EventHead openRegister={openRegister}/>
+        <EventHead openRegister={openRegister} openEventGraph={openEventGraph} />
         <hr />
         <EventBody
           eventList={eventList}

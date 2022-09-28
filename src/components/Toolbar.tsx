@@ -9,14 +9,12 @@ import {
   useColorModeValue,
   Stack,
   Image,
-  Text,
-  Button
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import Router from 'next/router';
-import { useSelector } from 'react-redux';
+import { Cookies } from 'react-cookie';
 
-const Links = ['Admins', 'Users', 'AirDrop', 'Event', 'Error'];
+const cookies = new Cookies()
+const links = ['Admins', 'Users', 'AirDrop', 'Event', 'Error'];
 
 const NavLink = ({ children }: { children: ReactNode }) => (
   <Link
@@ -35,26 +33,25 @@ const NavLink = ({ children }: { children: ReactNode }) => (
   </Link>
 );
 
-export default function Simple() {
-  // const email = useSelector((state: any) => {
-  //   return state.setEmail.value
-  // })
+export default function Toolbar() {
   const logout = () => {
-    localStorage.clear()
-    Router.push({
-      pathname: '/'
-    })
+    cookies.remove('mytoken')
+    
+    // Router.push({
+    //   pathname: '/'
+    // })
   };
 
   const [toolbarRender, setToolbarRender] = useState(true);
 
   useEffect(() => {
-    if( localStorage.getItem('mytoken') ) {
+    if( cookies.get('mytoken') ) {
       setToolbarRender(false);
     }else {
       setToolbarRender(true);
     }
   });
+  
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -89,7 +86,7 @@ export default function Simple() {
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
-              {Links.map((link) => (
+              {links.map((link) => (
                 <NavLink
                   key={link}
                 >

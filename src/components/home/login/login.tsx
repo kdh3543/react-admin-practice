@@ -11,12 +11,14 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import member from "../../../apis/member";
 import { useDispatch } from "react-redux";
 import slice from "../../hooks/store/slice/memberSlice";
+import { Cookies } from "react-cookie";
   
+const cookies = new Cookies()
+
 const { login } = member()
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -35,42 +37,25 @@ export default function Login() {
     setLoginInfo({ ...loginInfo, [name]: value });
   }
 
-  const LoginGetId = async (e: any) => {
+  const onLogin = async (e: any) => {
     e.preventDefault();
     if (!loginInfo.userId || !loginInfo.userPw) {
       setError(true)
       return false
-    } else {
-      setError(false)
     }
+      
+    setError(false)
     await login(loginInfo.userId, loginInfo.userPw).then((res:any) => {
       console.log(res)
-      if (res.data.code === 0) {
-        // const data = {
-        //   value: res.data.data.authToken,
-        //   expire: Date.now() + 100
-        // }
-        // if (Date.now() > data.expire) {
-        //   localStorage.clear()
-        //   console.log('end!!!')
-        //   return false
-        // }
-        // localStorage.setItem('mytoken', JSON.stringify(data))
-        dispatch(memberSlice.loginSlice.actions.login(res.data.data.email))
-        localStorage.setItem('mytoken', res.data.data.authToken)
-        setError(false)
-        axios.defaults.headers.common['Authorization']=`Bearer ${res.data.data.authToken}`
-        router.push('/Admins');
-
-        // 자동 로그아웃
-        setTimeout(() => {
-          localStorage.clear()
-          router.push('/')
-        },60*60*3600)
-      } else {
+      if (!res.data.data) {
         setError(true)
         return false
       }
+      cookies.set('mytoken', res.data.data.authToken)
+      dispatch(memberSlice.loginSlice.actions.login(res.data.data.email))
+      setError(false)
+      router.push('/Admins');  
+      return true
     })
   }
 
@@ -130,7 +115,7 @@ export default function Login() {
                 variant="solid"
                 colorScheme="teal"
                 width="full"
-                onClick={LoginGetId}
+                onClick={onLogin}
               >
                 로그인
               </Button>

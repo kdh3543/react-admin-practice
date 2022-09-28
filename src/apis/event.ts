@@ -1,19 +1,14 @@
 import axios from "axios"
 import { getCookie } from "../utils/cookie"
+import axiosApiMethod from "./axiosApiMethod"
 
-const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+const {authInstance,authFileInstance} = axiosApiMethod()
 
 export default function eventApis() {
   const getEventList =  (page:Number, order:String) => {
     try {
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/event?order=${order}&page=${page}&take=10`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance.get(`/event?order=${order}&page=${page}&take=10`)
+     
     } catch (err: any) {
       return err
     }
@@ -21,14 +16,8 @@ export default function eventApis() {
   
   const deleteEvent =  (id: any) => {
     try {
-      return axios({
-        method: 'delete',
-        url: `${apiUrl}/event/${id}`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance.delete(`/event/${id}`)
+    
     } catch (err: any) {
       return err
     }
@@ -36,25 +25,19 @@ export default function eventApis() {
 
   const registerEvent =  (data: any) => {
     try {
-      return axios({
-        method: 'post',
-        url: `${apiUrl}/event`,
-        data: {
-          type: data.type,
-          subType: data.subType,
-          tokenId: data.tokenId,
-          amount: data.amount,
-          maxApplyCount: data.maxApplyCount,
-          startAt: data.startAt,
-          endAt: data.endAt,
-          contractId: data.contractId,
-          preconditionEventId: data.preconditionEventId,
-        },
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      const eventData = {
+        type: data.type,
+        subType: data.subType,
+        tokenId: data.tokenId,
+        amount: data.amount,
+        maxApplyCount: data.maxApplyCount,
+        startAt: data.startAt,
+        endAt: data.endAt,
+        contractId: data.contractId,
+        preconditionEventId: data.preconditionEventId,
+      }
+      return authInstance.post(`/event`,eventData)
+   
     } catch (err: any) {
       return err
     }
@@ -62,14 +45,8 @@ export default function eventApis() {
 
   const getEventInfo = (id: any) => {
     try {
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/event/${id}`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance.get(`/event/${id}`)
+     
     } catch (err: any) {
       return err
     }
@@ -77,26 +54,20 @@ export default function eventApis() {
 
   const updateEvent = (data:any) => {
     try {
-      return axios({
-        method: 'put',
-        url: `${apiUrl}/event/${data.id}`,
-        data: {
-          type: data.type,
-          subType: data.subType,
-          tokenId: parseInt(data.tokenId),
-          amount:parseInt(data.amount),
-          maxApplyCount:parseInt(data.maxApplyCount),
-          active:data.active,
-          applyCount:parseInt(data.applyCount),
-          preconditionEventId:parseInt(data.preconditionEventId),
-          startAt:data.startAt,
-          endAt:data.endAt
-        },
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      const updateData = {
+        type: data.type,
+        subType: data.subType,
+        tokenId: parseInt(data.tokenId),
+        amount:parseInt(data.amount),
+        maxApplyCount:parseInt(data.maxApplyCount),
+        active:data.active,
+        applyCount:parseInt(data.applyCount),
+        preconditionEventId:parseInt(data.preconditionEventId),
+        startAt:data.startAt,
+        endAt:data.endAt
+      }
+      return authInstance.put(`/event/${data.id}`,updateData)
+    
     } catch (err: any) {
       return err
     }
@@ -104,14 +75,8 @@ export default function eventApis() {
 
   const getUserList = (data: any) => {
     try {
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/user-event/event-id?id=${data.id}&order=${data.order}&page=${data.page}&take=10`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authInstance.get(`/user-event/event-id?id=${data.id}&order=${data.order}&page=${data.page}&take=10`)
+   
     } catch (err: any) {
       return err
     }
@@ -123,34 +88,32 @@ export default function eventApis() {
     frm.append('eventId', data.id[0])
     frm.append('file',data.file)
     try {
-      return axios({
-        method: 'post',
-        url: `${apiUrl}/user-event/import`,
-        data: frm,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${localStorage.getItem('mytoken')}`
-        }
-      })
+      return authFileInstance.post('/user-event/import',frm)
+  
     } catch (err: any) {
       return err
     }
   }
 
   const airdropUserContractImport = () => {
-    return axios({
-      method: 'post',
-      url: `${apiUrl}/contract/dsp/data/airdrop/user/import/test`,
-      data: {
+    try {
+      const data = {
         title: 'test',
         airdropContractName: 'AirdropGachaTicket',
         tokenName: 'GachaTicket'
-      },
-      headers: {
-        'content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('mytoken')}`
       }
-    })
+      return authInstance.post('/contract/dsp/data/airdrop/user/import/test',data)  
+    } catch (err: any) {
+      return err
+    }
+  }
+
+  const getEventUsers = () => {
+    try {
+      return authInstance.get('/event/analysis/apply')
+    } catch (err: any) {
+      return err
+    }
   }
   
   return {
@@ -161,6 +124,7 @@ export default function eventApis() {
     updateEvent,
     getUserList,
     importFile,
-    airdropUserContractImport
+    airdropUserContractImport,
+    getEventUsers
   }
 }

@@ -16,7 +16,9 @@ import {
 import { useEffect, useState } from "react";
 import member from "../../apis/member";
 import { getCookie } from "../../utils/cookie";
+import { Cookies } from "react-cookie";
 
+const cookies = new Cookies()
 const {modifyAdminInfo, getAdminInfo} = member()
 export default function AdminInfor() {
   const titles = ['id','Email','createdAt','updatedAt','deletedAt','activatedAt','roles']
@@ -40,6 +42,7 @@ export default function AdminInfor() {
 
   useEffect(() => {
     infos() 
+    console.log(cookies.get('mytoken'))
   },[router.query.admin])
   
   const modifyGrade = async () => {
