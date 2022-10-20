@@ -42,7 +42,7 @@ export default function Users() {
   // move user info
   const moveInfo = (id:any) => {
     router.push({
-      pathname: `/userinfo/${id}`,
+      pathname: `/userinfo`,
       query: {
         id
       }
@@ -59,22 +59,22 @@ export default function Users() {
 
   // search func
   const onSearch = async (data: any) => {
-    if (data) {
-      await searchByAddress(data).then((res:any) => {
-        console.log(res)
-        if (res.data.code === 101) {
-          setSearchResult(false)
-        } else {
-          setSearchResult(true)
-          setPage(1)
-          setUserData([res.data.data.user])
-          setDataLength(1)
-        }
-      })
-    } else {
+    if (!data) {
       setSearchResult(true)
       await getUserData()
+      return false
     }
+    await searchByAddress(data).then((res:any) => {
+      if (res.data.code === 101) {
+        setSearchResult(false)
+      } else {
+        setSearchResult(true)
+        setPage(1)
+        setUserData([res.data.data.user])
+        setDataLength(1)
+      }
+    })
+    return true
   }
 
   // show user graph

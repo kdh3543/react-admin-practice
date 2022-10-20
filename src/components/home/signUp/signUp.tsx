@@ -18,6 +18,7 @@ import {
 import { FaUserAlt, FaLock, FaEnvelope } from "react-icons/fa";
 import axios from "axios";
 import member from '../../../apis/member'
+import memberApi from "../../../apis/member";
 
 interface NumberType {
   userId: string | undefined,
@@ -34,25 +35,13 @@ export default function SignUp(prop:any) {
 
   const [error, setError] = useState('')
   const [errorStatus, setErrorStatus] = useState(false)
-  const [capchaNumber, setCapchaNumber] = useState<undefined | number>(undefined);
+  // const [capchaNumber, setCapchaNumber] = useState<undefined | number>(undefined);
   const [signUpValue, setSignUpValue] = useState<NumberType>({
     userId: '',
     userPw: '',
     userPwCheck: ''
   });
 
-  useEffect(() => {
-
-    let randomNumber = Math.floor(Math.random() * (9999 - 1000) + 1000);
-    setCapchaNumber(randomNumber);
-
-    if (canvas.current !== null) {
-      const capChaCtx = canvas.current?.getContext('2d');
-      capChaCtx.font = "80px arial";
-      capChaCtx.color = "red";
-      capChaCtx.strokeText(randomNumber, 105, 80);
-    }
-  }, []);
   const valueOnChange = (e:any) => {
     const { value, name } = e.target; 
     setSignUpValue({ ...signUpValue, [name]: value });
@@ -61,30 +50,34 @@ export default function SignUp(prop:any) {
   const submitSignUp = async(e:any) => {
     e.preventDefault();
     
+    // memberApi.signup({
+      
+    // })
+
     if (!signUpValue.userId || !signUpValue.userPw || !signUpValue.userPwCheck) {
       setErrorStatus(true)
       setError('must input all information')
       return false
     } else {
+      if (signUpValue.userPw !== signUpValue.userPwCheck) {
+        setErrorStatus(true)
+        setError('please input same password')
+        return false
+      } 
       await signup(signUpValue.userId, signUpValue.userPw).then((res:any) => {
         console.log(res)
         if (res.data.code === 1002) {
           setErrorStatus(true)
-          setError('ADMIN_USER_CONFLICT_EMAIL')
+          setError(res.data.message)
         } else {
           setErrorStatus(false)
           setError('')
           prop.signUp(true);
         }
       })
+      return true
     }
     
-    // try {
-    // const response = await axios.post('https://dev-admin.luxon.run/auth/signup', {email:signUpValue.userId , password: signUpValue.userPw});
-    // console.log(response);
-    // }catch(err) {
-    //   console.log(err);
-    // }
   }
 
   return (

@@ -15,7 +15,6 @@ import {
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from "react";
-import slice from "../hooks/store/slice/nftSlice";
 import nft from "../../apis/nft";
 
 const {getContractLists} = nft()
@@ -29,9 +28,9 @@ export default function RegisterAirDropModal(props: any) {
 
   // get contract list
   const getContractList = async () => {
-    await getContractLists().then((res) => {
+    await getContractLists().then((res:any) => {
       // console.log(res)
-      setContractData(res.data.data)
+      return setContractData(res.data.data)
     })
   }
   

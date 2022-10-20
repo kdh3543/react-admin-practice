@@ -9,7 +9,7 @@ import {
   ListItem,
   ListIcon,
 } from '@chakra-ui/react';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { FaCircle } from 'react-icons/fa';
 
 const UserPage = (props:any) => {

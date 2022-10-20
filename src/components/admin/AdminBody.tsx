@@ -2,7 +2,6 @@ import { Box,Button } from '@chakra-ui/react'
 import { useRouter } from "next/router";
 
 export default function Admins(props: any) {
-  // console.log(getCookie('myToken'))
   const router = useRouter()
   
   const openAdminInfor = (id: any) => {

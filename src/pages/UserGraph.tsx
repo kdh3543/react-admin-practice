@@ -48,15 +48,17 @@ export default function UserGraph() {
         type: 'linear' as const,
         display: true,
         position: 'left' as const,
+        title: {
+          display: true,
+          text: '유저 수'
+        }
       },
-      y1: {
-        type: 'linear' as const,
-        display: true,
-        position: 'right' as const,
-        grid: {
-          drawOnChartArea: false,
-        },
-      },
+      x: {
+        title: {
+          display: true,
+          text: '날짜'
+        }
+      }
     },
   };
   

@@ -31,11 +31,11 @@ export default function Event() {
   const [startDate, setStartDate] = useState(null)
   const [endData, setEndDate] = useState(null)
   const [error, setError] = useState(false)
-
   // get event list
   const getList = async () => {
-    await getEventList(page, order).then((res:any) => {
-      if (res.data.code === 0) {
+    await getEventList(page, order).then((res: any) => {
+      console.log(res.data.data.length)
+      if (res.data.data.length) {
         setEventList(res.data.data)
         setDataLength(res.data.meta.itemCount)
       }
@@ -105,37 +105,38 @@ export default function Event() {
     ) {
       setError(true)
       return false
-    } else {
-      setError(false)
-      const data = {
-        type: type,
-        subType: subType,
-        tokenId: tokenId,
-        amount: amount,
-        maxApplyCount: maxCount,
-        contractId: contract,
-        preconditionEventId: eventId,
-        startAt: startDate,
-        endAt: endData
-      }
-      await registerEvent(data).then((res:any) => {
-        if (res.data.code === 0) {
-          dispatch(nftSlice.registerSlice.actions.open(false))
-          getList()
-          setType(null)
-          setSubType(null)
-          setTokenId('')
-          setAmount('')
-          setMaxCount('')
-          setContract(null)
-          setEventId('')
-          setStartDate(null)
-          setEndDate(null)
-        } else {
-          console.log(res)
-        }
-      })
+    } 
+
+    setError(false)
+    const data = {
+      type: type,
+      subType: subType,
+      tokenId: tokenId,
+      amount: amount,
+      maxApplyCount: maxCount,
+      contractId: contract,
+      preconditionEventId: eventId,
+      startAt: startDate,
+      endAt: endData
     }
+    await registerEvent(data).then((res: any) => {
+      if (res.data.code === 0) {
+        dispatch(nftSlice.registerSlice.actions.open(false))
+        getList()
+        setType(null)
+        setSubType(null)
+        setTokenId('')
+        setAmount('')
+        setMaxCount('')
+        setContract(null)
+        setEventId('')
+        setStartDate(null)
+        setEndDate(null)
+        return true
+      } 
+      return false
+    })
+    return true
   }
 
   // get contract list

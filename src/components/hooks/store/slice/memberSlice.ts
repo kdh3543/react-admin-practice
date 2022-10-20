@@ -12,15 +12,15 @@ export default function memberSlice() {
   //   }
   // })
 
-  const loginSlice = createSlice({
-    name: 'loginSlice',
-    initialState: { value: '' },
+  const loginSuccessSlice = createSlice({
+    name: 'loginSuccessSlice',
+    initialState: { value: false },
     reducers: {
-      login: (state, action) => {
+      success: (state, action) => {
         state.value = action.payload
       }
     }
   })
 
-  return {loginSlice}
+  return {loginSuccessSlice}
 }

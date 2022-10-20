@@ -5,19 +5,26 @@ import AdminHead from '../components/admin/AdminHead';
 import PaginationFunc from "../components/utils/PaginationFunc";
 import member from '../apis/member';
 import SelectOrder from '../components/utils/SelectOrder';
+import { Cookies } from 'react-cookie';
+import { useRouter } from 'next/router';
 
 const {getAdmins, toActivate} = member()
-
+const cookies = new Cookies()
 export default function Signup() {
   const [admin, setAdmin] = useState<any>([])
   const [page, setPage] = useState(1)
   const [dataLength, setDataLength] = useState(0)
   const [order, setOrder] = useState('DESC')
+  const router = useRouter();
   
   // get admin list
+  
+
   const getAdminInfor = async () => {
+    
     try {
       const res = await getAdmins(order, page)
+      console.log(res)
       setDataLength(res.data.meta.itemCount)
       setAdmin(res.data.data)
     } catch (e) {
@@ -25,8 +32,13 @@ export default function Signup() {
     }
   }
   useEffect(() => {
+    console.log('들어온 cookie 값',cookies.get('mytoken'))
+    if (!cookies.get('mytoken')) {
+      console.log('????')
+      return
+    }
     getAdminInfor()
-  }, [page,order])
+  }, [page,order,cookies.get('mytoken')])
 
   //pagination
   const handlePageChange = (page: any) => {
@@ -35,6 +47,7 @@ export default function Signup() {
 
   // activate to admin user
   const onActivate = async (e:any,id:any, index:any) => {
+    
     e.stopPropagation();
     const data = {
       adminUserId:id,

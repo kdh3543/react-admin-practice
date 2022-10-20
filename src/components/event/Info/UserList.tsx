@@ -37,7 +37,6 @@ export default function UserList(props: any) {
   },[])
   return (
     <>
-      
       <Container mt={'10px'} maxW={'1200px'}>
         <Text fontWeight={'600'} mt={'10px'}>
           Total User: {totalUser}

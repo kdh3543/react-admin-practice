@@ -25,7 +25,7 @@ ChartJS.register(
 
 const {getEventUsers} = eventApis()
 export default function UserGraph() {
-  const [graphData, setGraphData] = useState([])
+  const [graphData, setGraphData] = useState<any[]>([])
 
   const router = useRouter()
 
@@ -48,22 +48,22 @@ export default function UserGraph() {
         type: 'linear' as const,
         display: true,
         position: 'left' as const,
-      },
-      y1: {
-        type: 'linear' as const,
-        display: true,
-        position: 'right' as const,
-        grid: {
-          drawOnChartArea: false,
-        },
+        title: {
+          display: true,
+          text: '참여자 수'
+        }
       },
       x: {
         ticks: {
           callback: function (index:any) {
             return `${graphData[index].condition}/${graphData[index].eventId}`;
-          }
+          },
+        },
+        title: {
+          display: true,
+          text: '이벤트 컨디션/이벤트 아이디'
         }
-      }
+      },
     },
   };
   
@@ -77,13 +77,14 @@ export default function UserGraph() {
         borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
         yAxisID: 'y',
+        
       }
     ]
   }
 
   const getUsersByEventCondition = async () => {
     await getEventUsers().then((res: any) => {
-      console.log(res)
+      console.log(res.data)
       setGraphData(res.data.data)
     })
   }

@@ -5,14 +5,14 @@ export default function HeadSelect() {
   const [choiceStatus, setChoiceStatus] =  useState(false)
   const [category, setCategory] = useState(null)
   const choiceCategory = (e: any) => {
-    if (e.target.value) {
-      setChoiceStatus(true)
-      setCategory(e.target.value)
-    } else {
+    if (!e.target.value) {
       setChoiceStatus(false)
       setCategory(null)
+      return false
     }
-    
+    setChoiceStatus(true)
+    setCategory(e.target.value)
+    return true
   }
   return (
     <>
@@ -56,7 +56,6 @@ export default function HeadSelect() {
               </Select>
           : ''
         }
-        
       </Box>
     </>
   )

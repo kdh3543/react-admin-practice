@@ -8,29 +8,19 @@ import {
   ModalContent,
   ModalOverlay,
   Text,
-  CloseButton,
-  Input
+  CloseButton
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { useSelector } from 'react-redux'
 
-export default function DbImportModal(props: any) {
-  const [file, setFile] = useState('')
-
-  // modal status boolean
+export default function LoginSuccessModal(props: any) {
   const modalOpen = useSelector((state: any) => {
-    return state.openImportModal.value
+    return state.loginSuccess.value
   })
-  
-  // file select
-  const choiceFile = (e:any) => {
-    setFile(e.target.files[0])
-  }
-  
+ 
   return (
     <>
       <Modal isOpen={modalOpen} onClose={() => { props.closeModal() }}>
-        <ModalOverlay backgroundColor={'blackAlpha.400'}/>
+        <ModalOverlay backgroundColor={'blackAlpha.100'}/>
         <ModalContent
           w={'402px'}
           h={'280px'}
@@ -52,27 +42,17 @@ export default function DbImportModal(props: any) {
                 top={'5px'}
                 right={'5px'}
               />
-              <Text
-                fontSize={'20px'}
-                fontWeight={'extrabold'}
-                color={'primary.500'}
-              >
-                {'Import User'}
+              <Text fontWeight={'extrabold'} color={'primary.500'}>
+                {'DELETE LIST'}
               </Text>
-              <Input
-                type={'file'}
-                border={'none'}
-                mt={'50px'}
-                alignItems={'center'}
-                onChange={choiceFile}
-              />
+              <Text mt={'50px'} fontSize={'20px'}>
+                {'ARE YOU SURE DELETE LIST?'}
+              </Text>
               <Button
-                w={'100%'}
-                colorScheme={'purple'}
+                
                 mt={'50px'}
-                onClick={() => props.onRegister(file)}
               >
-                Register
+                DELETE
               </Button>
             </Flex>
           </ModalBody>

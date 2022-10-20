@@ -20,8 +20,6 @@ export default function EventBody(props: any) {
   const closeModal = () => {
     dispatch(nftSlice.deleteSlice.actions.open(false))
   }
-
-  
   
   return (
     <Box mt={3}>

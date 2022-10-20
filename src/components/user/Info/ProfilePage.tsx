@@ -16,15 +16,7 @@ import { FaCircle } from 'react-icons/fa';
 
 const ProfilePage = (props: any) => {
   const listArray = ['id', 'userId', 'createdAt', 'updatedAt', 'deletedAt'];
-  const [set, setSet] = useState([])
-  const get = () => {
-    setSet(props)
-  }
-
-  useEffect(() => {
-    get()
-  })
-  console.log(props.profile[3])
+  
   return (
     <Box
       maxW={'600px'}

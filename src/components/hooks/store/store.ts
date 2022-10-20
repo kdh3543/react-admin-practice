@@ -9,7 +9,7 @@ const store = configureStore({
     openRegister: nftSlice().registerSlice.reducer,
     openPModal: eventSlice().openSlice.reducer,
     openImportModal: eventSlice().importSlice.reducer,
-    setEmail: memberSlice().loginSlice.reducer
+    loginSuccess: memberSlice().loginSuccessSlice.reducer
   }
 })
 export default store;

@@ -1,10 +1,37 @@
 import axios from "axios"
 import { Cookies } from "react-cookie"
 import axiosApiMethod from "./axiosApiMethod"
+import { AxiosInstance } from "axios"
+import instance from "./axiosApiMethod"
 
 const cookies = new Cookies()
-const {defaultInstance,authInstance} = axiosApiMethod()
 const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+
+// export class MemberApi {
+//   axios: AxiosInstance = instance
+//   constructor(axios?: AxiosInstance) {
+//     if(axios) this.axios = axios
+//   }
+
+//   signup = async (email: string, password: string) => {
+//     const signupData = {
+//       email,
+//       password
+//     }
+//     const { data } = await this.axios({
+//       method: 'POST',
+//       url: `/auth/signup/${signupData}`
+//     })
+//     return data
+//   }
+// }
+
+// const memberApi = new MemberApi()
+// export default memberApi
+
+
+const {defaultInstance,authInstance} = axiosApiMethod()
+
 export default function member() {
   const signup = (email: any, password: any) => {
     try {
@@ -51,30 +78,31 @@ export default function member() {
     console.log('들어온 값은??')
     console.log(cookies.get('mytoken'))
     try {
-      // return await authInstance.get(`/admin/user?order=${order}&page=${page}&take=10`)
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/admin/user?order=${order}&page=${page}&take=10`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.get('mytoken')}`
-        }
-      })
+      return await authInstance.get(`/admin/user?order=${order}&page=${page}&take=10`)
+      // return axios({
+      //   method: 'get',
+      //   url: `${apiUrl}/admin/user?order=${order}&page=${page}&take=10`,
+      //   headers: {
+      //     'content-Type': 'application/json',
+      //     Authorization: `Bearer ${cookies.get('mytoken')}`
+      //   }
+      // })
     } catch (err:any) {
       return err
     }
   }
   const getAdminInfo = (adminId: any) => {
+    console.log('?들어온 건가?')
     try {
-      // return authInstance.get(`/admin/user/${adminId}`)
-      return axios({
-        method: 'get',
-        url: `${apiUrl}/admin/user/${adminId}`,
-        headers: {
-          'content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.get('mytoken')}`
-        }
-      })
+      return authInstance.get(`/admin/user/${adminId}`)
+      // return axios({
+      //   method: 'get',
+      //   url: `${apiUrl}/admin/user/${adminId}`,
+      //   headers: {
+      //     'content-Type': 'application/json',
+      //     Authorization: `Bearer ${cookies.get('mytoken')}`
+      //   }
+      // })
     } catch (err:any) {
       return err
     }
@@ -98,6 +126,7 @@ export default function member() {
         adminUserId: data.adminUserId,
         activate: data.activate,
       }
+      console.log('activateData?',activateData)
       return authInstance.put('/admin/user/activate',activateData)
     } catch (err: any) {
       return err

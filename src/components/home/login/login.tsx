@@ -16,14 +16,15 @@ import member from "../../../apis/member";
 import { useDispatch } from "react-redux";
 import slice from "../../hooks/store/slice/memberSlice";
 import { Cookies } from "react-cookie";
+import LoginSuccessModal from "../../modal/loginSuccessModal";
   
 const cookies = new Cookies()
-
 const { login } = member()
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 const memberSlice = slice()
 export default function Login() {
+  
   const dispatch = useDispatch()
   const router = useRouter();
   const [loginInfo, setLoginInfo] = useState({
@@ -31,8 +32,9 @@ export default function Login() {
     userPw: '',
   });
   const [error, setError] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
 
-  const onChange = (e:any) => {
+  const inputLoginInfo = (e:any) => {
     const { value, name } = e.target;
     setLoginInfo({ ...loginInfo, [name]: value });
   }
@@ -41,23 +43,33 @@ export default function Login() {
     e.preventDefault();
     if (!loginInfo.userId || !loginInfo.userPw) {
       setError(true)
+      setErrorMsg('PLEASE INPUT LOGIN INFO')
       return false
     }
-      
+
     setError(false)
+    setErrorMsg('')
     await login(loginInfo.userId, loginInfo.userPw).then((res:any) => {
       console.log(res)
       if (!res.data.data) {
         setError(true)
+        setErrorMsg(res.data.message)
         return false
       }
       cookies.set('mytoken', res.data.data.authToken)
-      dispatch(memberSlice.loginSlice.actions.login(res.data.data.email))
       setError(false)
-      router.push('/Admins');  
+      setErrorMsg('')
+
+      router.push({
+        pathname: '/Admins'
+      }, `/Admins`);  
       return true
     })
   }
+
+  // const closeModal = () => {
+  //   dispatch()
+  // }
 
   return (
     <Flex
@@ -86,7 +98,7 @@ export default function Login() {
                     pointerEvents="none"
                     children={<CFaUserAlt color="gray.300" />}
                   />
-                  <Input name="userId" type="email" placeholder="이메일" value={loginInfo.userId} onChange={onChange} />
+                  <Input name="userId" type="email" placeholder="이메일" value={loginInfo.userId} onChange={inputLoginInfo} />
                 </InputGroup>
               </FormControl>
               <FormControl>
@@ -101,12 +113,12 @@ export default function Login() {
                     type="password"
                     placeholder="비밀번호"
                     value={loginInfo.userPw}
-                    onChange={onChange}
+                    onChange={inputLoginInfo}
                   />
                 </InputGroup>
               </FormControl>
               {error
-                ? <Box color={'red'} fontWeight={'bold'} textAlign={'center'}>IT IS WRONG INFORMATION</Box>
+                ? <Box color={'red'} fontWeight={'bold'} textAlign={'center'}>{errorMsg}</Box>
                 : ''
               }
               <Button
@@ -119,6 +131,11 @@ export default function Login() {
               >
                 로그인
               </Button>
+              {/* <LoginSuccessModal
+                delId={delId}
+                closeModal={closeModal}
+                onDelete={(id:any) => props.onDelete(id)}
+              /> */}
             </Stack>
           </form>
         </Box>

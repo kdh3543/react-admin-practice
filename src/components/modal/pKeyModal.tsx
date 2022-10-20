@@ -23,7 +23,7 @@ export default function PKeyModal(props: any) {
 
   // input private key
   const inputPKey = (e: any) => {
-    setPKey(e.target.value)
+    return setPKey(e.target.value)
   }
   return (
     <>

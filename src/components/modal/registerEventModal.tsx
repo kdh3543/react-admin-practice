@@ -12,11 +12,9 @@ import {
   Box
 } from "@chakra-ui/react";
 
-import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux'
 
 import typeData from "../event/data/data";
-
 
 export default function RegisterEventModal(props: any) {
   
