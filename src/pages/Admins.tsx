@@ -32,7 +32,6 @@ export default function Signup() {
     }
   }
   useEffect(() => {
-    console.log('들어온 cookie 값',cookies.get('mytoken'))
     if (!cookies.get('mytoken')) {
       console.log('????')
       return

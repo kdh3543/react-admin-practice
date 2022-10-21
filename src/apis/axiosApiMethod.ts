@@ -1,46 +1,11 @@
 import axios from "axios";
 import { Cookies } from "react-cookie";
 import { useRouter } from "next/router";
+import { apiLogger } from "../utils/apiLogger";
 
 const cookies = new Cookies()
+const token = cookies.get('mytoken')
 const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
-
-// const instance = axios.create({
-//   baseURL: apiUrl,
-//   withCredentials: true,
-// })
-
-// const setAuthHeader = (token: string) => {
-//   if (token) {
-//     instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
-//   }
-// }
-
-// const unsetAuthHeader = () => {
-//   delete instance.defaults.headers.common['Authorization']
-// }
-
-// instance.interceptors.request.use(
-//  async (config) => {
-//     const token = cookies.get('mytoken')
-//     if(!token)
-//     console.log('안나옴')
-    
-//     return config;
-//   },
-//   (error) => {
-//     Promise.reject(error)
-//   }
-// )
-
-// instance.interceptors.response.use(
-//   (res) => {
-    
-//   },
-//   async (error) => {
-//     console.log('error는??',error)
-//   }
-// )
 
 export default function axiosApiMethod() {
   const axiosApi = (url: any) => {
@@ -49,8 +14,10 @@ export default function axiosApiMethod() {
   }
   
   const axiosAuthApi = (url: any) => {
-    const token = cookies.get('mytoken')
     console.log('token값은?? ', token)
+    if (!token) {
+      console.log()
+    }
     const apiInstance = axios.create({
       baseURL: url,
       headers: {
@@ -61,7 +28,6 @@ export default function axiosApiMethod() {
     return apiInstance
   }
   const axiosAuthFileApi = (url: any) => {
-    const token = cookies.get('mytoken')
     const apiInstance = axios.create({
       baseURL: url,
       headers: {
@@ -74,6 +40,32 @@ export default function axiosApiMethod() {
   const defaultInstance = axiosApi(apiUrl)
   const authInstance = axiosAuthApi(apiUrl)
   const authFileInstance = axiosAuthFileApi(apiUrl)
+
+  // axios.interceptors.request.use(
+  //   (config) => {
+  //     if(!token) console.log('cookie 없음3')
+  //     console.log('config',config)
+  //     return config
+  //   },
+  //   (error) => {
+  //     if(!token) console.log('cookie 없음4')
+  //     console.log('error뜸', error)
+  //   }
+  // )
+
+  // axios.interceptors.response.use(
+  //   async (config) => {
+  //     if (!token) {
+  //       console.log('cookie 없음1')
+  //       console.log('token값',token)
+  //     }
+  //     console.log('response config',config)
+  //     return config
+  //   },
+  //   (error) => {
+  //     if(!token) console.log('cookie 없음2')
+  //     console.log('response error뜸', error)
+  //   }
+  // )
   return {defaultInstance, authInstance, authFileInstance}
 }
-

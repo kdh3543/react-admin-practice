@@ -7,29 +7,6 @@ import instance from "./axiosApiMethod"
 const cookies = new Cookies()
 const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
-// export class MemberApi {
-//   axios: AxiosInstance = instance
-//   constructor(axios?: AxiosInstance) {
-//     if(axios) this.axios = axios
-//   }
-
-//   signup = async (email: string, password: string) => {
-//     const signupData = {
-//       email,
-//       password
-//     }
-//     const { data } = await this.axios({
-//       method: 'POST',
-//       url: `/auth/signup/${signupData}`
-//     })
-//     return data
-//   }
-// }
-
-// const memberApi = new MemberApi()
-// export default memberApi
-
-
 const {defaultInstance,authInstance} = axiosApiMethod()
 
 export default function member() {
@@ -53,6 +30,11 @@ export default function member() {
       }
       console.log(data)
       return await defaultInstance.post('/auth/login',data)
+      // return axios({
+      //   method: 'POST',
+      //   url: `${apiUrl}/auth/login/${data}`,
+        
+      // })
     } catch (err:any) {
       return err
     }
@@ -78,15 +60,15 @@ export default function member() {
     console.log('들어온 값은??')
     console.log(cookies.get('mytoken'))
     try {
-      return await authInstance.get(`/admin/user?order=${order}&page=${page}&take=10`)
-      // return axios({
-      //   method: 'get',
-      //   url: `${apiUrl}/admin/user?order=${order}&page=${page}&take=10`,
-      //   headers: {
-      //     'content-Type': 'application/json',
-      //     Authorization: `Bearer ${cookies.get('mytoken')}`
-      //   }
-      // })
+      // return await authInstance.get(`/admin/user?order=${order}&page=${page}&take=10`)
+      return axios({
+        method: 'get',
+        url: `${apiUrl}/admin/user?order=${order}&page=${page}&take=10`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.get('mytoken')}`
+        }
+      })
     } catch (err:any) {
       return err
     }
@@ -94,15 +76,15 @@ export default function member() {
   const getAdminInfo = (adminId: any) => {
     console.log('?들어온 건가?')
     try {
-      return authInstance.get(`/admin/user/${adminId}`)
-      // return axios({
-      //   method: 'get',
-      //   url: `${apiUrl}/admin/user/${adminId}`,
-      //   headers: {
-      //     'content-Type': 'application/json',
-      //     Authorization: `Bearer ${cookies.get('mytoken')}`
-      //   }
-      // })
+      // return authInstance.get(`/admin/user/${adminId}`)
+      return axios({
+        method: 'get',
+        url: `${apiUrl}/admin/user/${adminId}`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.get('mytoken')}`
+        }
+      })
     } catch (err:any) {
       return err
     }
@@ -114,7 +96,16 @@ export default function member() {
         adminUserId: userId,
         roles: roles
       }
-      return authInstance.put('/admin/user/role',data)
+      // return authInstance.put('/admin/user/role',data)
+      console.log('data??',data)
+      return axios({
+        method: 'put',
+        url: `${apiUrl}/admin/user/role/${data}`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.get('mytoken')}`
+        }
+      })
     } catch (err:any) {
       return err
     }
@@ -127,7 +118,15 @@ export default function member() {
         activate: data.activate,
       }
       console.log('activateData?',activateData)
-      return authInstance.put('/admin/user/activate',activateData)
+      // return authInstance.put('/admin/user/activate',activateData)
+      return axios({
+        method: 'put',
+        url: `${apiUrl}/admin/user/activate/${activateData}`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.get('mytoken')}`
+        }
+      })
     } catch (err: any) {
       return err
     }
