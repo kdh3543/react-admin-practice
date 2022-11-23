@@ -10,59 +10,80 @@ const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 const {defaultInstance,authInstance} = axiosApiMethod()
 
 export default function member() {
-  const signup = (email: any, password: any) => {
+  const signup = async (email: any, password: any) => {
     try {
       const data = {
         email,
         password
       }
-      return defaultInstance.post('/auth/signup',data)
+      return axios({
+        method: 'post',
+        url: `${apiUrl}/auth/signup`,
+        data: data,
+        headers: {
+          'content-Type': 'application/json',
+        }
+      })
     } catch (err: any) {
       return err
     }
   }
   
   const login = async (loginId:any,loginPw:any) => {
+
     try {
       const data = {
         email: loginId,
         password: loginPw
       }
       console.log(data)
-      return await defaultInstance.post('/auth/login',data)
-      // return axios({
-      //   method: 'POST',
-      //   url: `${apiUrl}/auth/login/${data}`,
-        
-      // })
+      return await axios({
+        method: 'POST',
+        url: `${apiUrl}/auth/login`,
+        data,
+        headers: {
+          'content-Type': 'application/json',
+        }
+      })
     } catch (err:any) {
       return err
     }
   }
   
-  const getUsers = (order: String, page: Number) => {
+  const getUsers = async (order: String, page: Number) => {
     try {
-      return authInstance.get(`/user?order=${order}&page=${page}&take=10`)
+      return await axios({
+        method: 'GET',
+        url: `${apiUrl}/user?order=${order}&page=${page}&take=10`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.get('mytoken')}`
+        }
+      })
     } catch (err:any) {
       return err
     }
   }
 
-  const getUserInfo = (userId: any) => {
+  const getUserInfo = async (userId: any) => {
     try {
-      return authInstance.get(`/user/${userId}`)
+      return await axios({
+        method: 'GET',
+        url: `${apiUrl}/user/${userId}`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.get('mytoken')}`
+        }
+      })
     } catch (err:any) {
       return err
     }
   }
 
   const getAdmins = async (order: String, page: Number) => {
-    console.log('들어온 값은??')
-    console.log(cookies.get('mytoken'))
     try {
-      // return await authInstance.get(`/admin/user?order=${order}&page=${page}&take=10`)
-      return axios({
-        method: 'get',
+      return await axios({
+        method: 'GET',
         url: `${apiUrl}/admin/user?order=${order}&page=${page}&take=10`,
         headers: {
           'content-Type': 'application/json',
@@ -73,11 +94,9 @@ export default function member() {
       return err
     }
   }
-  const getAdminInfo = (adminId: any) => {
-    console.log('?들어온 건가?')
+  const getAdminInfo = async (adminId: any) => {
     try {
-      // return authInstance.get(`/admin/user/${adminId}`)
-      return axios({
+      return await axios({
         method: 'get',
         url: `${apiUrl}/admin/user/${adminId}`,
         headers: {
@@ -90,17 +109,16 @@ export default function member() {
     }
     
   }
-  const modifyAdminInfo = (userId: any, roles: any) => {
+  const modifyAdminInfo = async (userId: any, roles: any) => {
     try {
       const data = {
-        adminUserId: userId,
+        adminUserId: +userId,
         roles: roles
       }
-      // return authInstance.put('/admin/user/role',data)
-      console.log('data??',data)
-      return axios({
+      return await axios({
         method: 'put',
-        url: `${apiUrl}/admin/user/role/${data}`,
+        url: `${apiUrl}/admin/user/role`,
+        data,
         headers: {
           'content-Type': 'application/json',
           Authorization: `Bearer ${cookies.get('mytoken')}`
@@ -111,17 +129,16 @@ export default function member() {
     }
   }
   
-  const toActivate = (data:any) => {
+  const toActivate = async (data:any) => {
     try {
       const activateData = {
         adminUserId: data.adminUserId,
         activate: data.activate,
       }
-      console.log('activateData?',activateData)
-      // return authInstance.put('/admin/user/activate',activateData)
-      return axios({
-        method: 'put',
-        url: `${apiUrl}/admin/user/activate/${activateData}`,
+      return await axios({
+        method: 'PUT',
+        url: `${apiUrl}/admin/user/activate`,
+        data:activateData,
         headers: {
           'content-Type': 'application/json',
           Authorization: `Bearer ${cookies.get('mytoken')}`
@@ -132,17 +149,31 @@ export default function member() {
     }
   }
 
-  const searchByAddress = (data: any) => {
+  const searchByAddress = async (data: any) => {
     try {
-      return authInstance.get(`/user/address/${data}`)
+      return await axios({
+        method: 'GET',
+        url: `${apiUrl}/user/address/${data}`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.get('mytoken')}`
+        }
+      })
     } catch (err: any) {
       return err
     }
   }
 
-  const getCreateWalletUsers = () => {
+  const getCreateWalletUsers = async () => {
     try {
-      return authInstance.get('/user/analysis/daily-created')
+      return await axios({
+        method: 'GET',
+        url: `${apiUrl}/user/analysis/daily-created`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.get('mytoken')}`
+        }
+      })
     } catch (err: any) {
       return err
     }

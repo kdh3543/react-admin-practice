@@ -1,12 +1,22 @@
+import axios from "axios";
+import { Cookies } from "react-cookie";
 import axiosApiMethod from "./axiosApiMethod";
 
 // const apiUrlAdmin = `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin`
-// const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+const cookies = new Cookies()
+const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 const {authInstance,authFileInstance} = axiosApiMethod()
 export default function nft() {
-  const getDropList = (order: String, page: Number) => {
+  const getDropList = async (order: String, page: Number) => {
     try {
-      return authInstance.get(`/airdrop-centralization-task?order=${order}&page=${page}&take=10`)
+      return await axios({
+        method: 'GET',
+        url: `${apiUrl}/airdrop-centralization-task?order=${order}&page=${page}&take=10`,
+        headers: {
+          'content-Type': 'application/json',
+          Authorization: `Bearer ${cookies.get('mytoken')}`
+        }
+      })
     } catch (err: any) {
       return err
     }
