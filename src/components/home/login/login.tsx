@@ -97,8 +97,9 @@ export default function Login() {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<CFaUserAlt color="gray.300" />}
-                  />
+                  >
+                    <CFaUserAlt color="gray.300" />
+                  </InputLeftElement>
                   <Input name="userId" type="email" placeholder="이메일" value={loginInfo.userId} onChange={inputLoginInfo} />
                 </InputGroup>
               </FormControl>
@@ -106,9 +107,9 @@ export default function Login() {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    color="gray.300"
-                    children={<CFaLock color="gray.300" />}
-                  />
+                  >
+                    <CFaLock color="gray.300" />
+                  </InputLeftElement>
                   <Input
                     name="userPw"
                     type="password"

@@ -18,7 +18,7 @@ export default function AirDrop() {
   const [order, setOrder] = useState('DESC')
   const [dataLength, setDataLength] = useState(0)
   const [title, setTilte] = useState('')
-  const [contract, setContract] = useState(null)
+  const [contract, setContract] = useState<any>(null)
   const [file, setFile] = useState<any>({})
   const [contractData, setContractData] = useState<any>([])
 

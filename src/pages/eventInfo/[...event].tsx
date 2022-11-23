@@ -23,7 +23,7 @@ const {
 export default function EventInfo() {
   const dispatch = useDispatch()
   const router = useRouter()
-  const [infoData, setInfoData] = useState([])
+  const [infoData, setInfoData] = useState<any>([])
   const [infoStatus, setInfoStatus] = useState(true)
 
   // get event info list

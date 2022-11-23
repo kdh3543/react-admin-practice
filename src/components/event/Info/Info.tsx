@@ -25,7 +25,7 @@ import eventApis from '../../../apis/event';
 export default function Info(props: any) {
   const router = useRouter()
   const [type, setType] = useState('')
-  const [startAt, setStartAt] = useState(null)
+  const [startAt, setStartAt] = useState<any>(null)
 
   // update info
   const selectType = (e: any) => {
@@ -241,7 +241,7 @@ export default function Info(props: any) {
                     type={'date'}
                     size='sm'
                     onChange={choiceEnd}
-                    min={startAt}
+                    min={startAt||null}
                     defaultValue={'preconditionEventId'}
                   />
                 </ListItem>

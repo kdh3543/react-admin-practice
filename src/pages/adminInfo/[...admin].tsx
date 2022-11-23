@@ -47,7 +47,8 @@ export default function AdminInfor() {
   
   const modifyGrade = async () => {
     if (grade) {
-      const sendId = parseInt(router.query.admin);
+      const admin:any = router.query.admin
+      const sendId = parseInt(admin);
       const res = await modifyAdminInfo(sendId, grade)
       if (res.data.code === 0) {
         setAdInfo({...adInfo, roles:grade})

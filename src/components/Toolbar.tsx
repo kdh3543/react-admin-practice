@@ -184,7 +184,7 @@ export default function Toolbar() {
                 </Link>
               </Box>
               <Stack as={'nav'} spacing={4}>
-                {Links.map((link) => (
+                {links.map((link) => (
                   <NavLink key={link}>{link}</NavLink>
                 ))}
               </Stack>

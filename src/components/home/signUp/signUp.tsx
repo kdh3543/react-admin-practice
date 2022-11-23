@@ -105,8 +105,9 @@ export default function SignUp(prop:any) {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<CFaEnvelope color="gray.300" />}
-                  />
+                  >
+                    <CFaEnvelope color="gray.300" />
+                  </InputLeftElement>
                   <Input
                     name='userId'
                     type="email"
@@ -120,9 +121,9 @@ export default function SignUp(prop:any) {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    color="gray.300"
-                    children={<CFaLock color="gray.300" />}
-                  />
+                  >
+                    <CFaLock color="gray.300" />
+                  </InputLeftElement>
                   <Input
                     name="userPw"
                     type="password"
@@ -136,9 +137,9 @@ export default function SignUp(prop:any) {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    color="gray.300"
-                    children={<CFaLock color="gray.300" />}
-                  />
+                  >
+                    <CFaLock color="gray.300" />
+                  </InputLeftElement>
                   <Input
                     name="userPwCheck"
                     type="password"
